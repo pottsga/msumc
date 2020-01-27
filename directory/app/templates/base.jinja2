@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{title or 'Directory'}}</title>
+
+  <!-- Favicon -->
+  <link href="{{request.static_url('directory:app/static/img/favicon.png')}}" rel="shortcut icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Oswald&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{request.static_url('directory:app/static/vendor/bootstrap4/css/bootstrap.min.css')}}">
+  <link rel="stylesheet" href="{{request.static_url('directory:app/static/vendor/jquery-ui/jquery-ui.min.css')}}">
+  <link rel="stylesheet" href="{{request.static_url('directory:app/static/css/main.css')}}">
+</head>
+<body>
+  {% set admin = false %}
+  {% include './includes/navbar.jinja2' %}
+
+  <div class="container my-3">
+    <div class="row">
+      <div class="col-lg-9">
+        {% include './includes/messages.jinja2' %}
+        <main>
+          {% block content %}{% endblock content %}
+        </main>
+      </div>
+      <div class="col-lg-3">
+        {% include './includes/sidebar.jinja2' %} 
+      </div>
+    </div>
+  </div>
+
+  <script src="{{request.static_url('directory:app/static/vendor/jquery/jquery-3.2.1.min.js')}}"></script>
+  <script src="{{request.static_url('directory:app/static/vendor/jquery-ui/jquery-ui.min.js')}}"></script>
+  <script src="{{request.static_url('directory:app/static/vendor/popper/popper.min.js')}}"></script>
+  <script src="{{request.static_url('directory:app/static/vendor/bootstrap4/js/bootstrap.min.js')}}"></script>
+  <script src="{{request.static_url('directory:app/static/js/main.js')}}"></script>
+</body>
+</html>

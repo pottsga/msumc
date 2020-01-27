@@ -1,0 +1,127 @@
+{% extends '../base_admin.jinja2' %}
+
+{% block content %}
+  <h1>
+    {{person.first_name}} {{person.last_name}} - View 
+    <span class="ml-auto">
+      <a class="btn btn-secondary" 
+         data-toggle="collapse" 
+         href="#details" 
+         role="button">
+        Show Additional Details
+      </a>
+      <a class="btn btn-info" 
+         href="{{request.route_url('family.view', family_id=family.id)}}">
+        View Family
+      </a>
+      <a class="btn btn-danger" 
+         href="{{request.route_url('person.delete', person_id=person.id)}}" 
+         onclick="return confirm('Are you sure you want to delete this person?');">
+        Delete Person
+      </a>
+    </span>
+  </h1>
+
+  <div class="collapse" id="details">
+    <div class="card card-body">
+      <table class="table table-sm table-bordered">
+        <tr>
+          <th>Created on</th>
+          <td><code>{{person.created_on.strftime('%m/%d/%Y %I:%M %p')}}</code></td>
+        </tr>
+        <tr>
+          <th>Created by</th>
+          <td><code>{{person.created_by}}</code></td>
+        </tr>
+        <tr>
+          <th>ID</th>
+          <td><code>{{person.id}}</code></td>
+        </tr>
+        <tr>
+          <th>Family ID</th>
+          <td><code>{{person.family_id}}</code></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <form action="{{request.route_url('person.update', person_id=person.id)}}" method="POST">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="form-group">
+          <div class="custom-control custom-switch">
+            <input type="checkbox" id="is_child" name="is_child" class="custom-control-input" {% if person.is_child %}checked{% endif %}>
+            <label class="custom-control-label" for="is_child">Is Child?</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6"></div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label for="family_id">Family</label>
+          <select id="family_id" name="family_id" class="form-control" required>
+            <option value=""></option>
+            {% for family in families %}
+              <option value="{{family.id}}"
+                {% if family.id == person.family_id %}selected{% endif %}>
+                {{family.last_name}}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="col-lg-6"></div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label for="first_name">First Name</label>
+          <input type="text" id="first_name" name="first_name" class="form-control" value="{{person.first_name}}" required>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label for="last_name">Last Name</label>
+          <input type="text" id="last_name" name="last_name" class="form-control" value="{{person.last_name}}" required>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label for="last_name">Gender</label>
+          <select id="gender" name="gender" class="form-control" required>
+            <option {% if person.gender == 'M' %}selected{% endif %} value="M">Male</option>
+            <option {% if person.gender == 'M' %}selected{% endif %} value="F">Female</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label for="birthday">Birthday</label>
+          <input type="text" id="birthday" name="birthday" class="form-control datepicker" 
+            pattern="\d{2}/\d{2}/\d{4}" value="{% if person.birthday %}{{person.birthday.strftime('%m/%d/%Y')}}{% endif %}">
+          <small class="form-text text-muted">Must be of format 00/00/0000</small>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label for="phone_number">Phone Number</label>
+          <input type="tel" id="phone_number" name="phone_number" class="form-control" pattern="\(\d{3}\)\s{1}\d{3}-\d{4}" value="{{person.phone_number or ''}}">
+          <small class="form-text text-muted">Must be of format (000) 000-0000.</small>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" class="form-control" value="{{person.email or ''}}">
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="form-group">
+          <label for="notes">Notes</label>
+          <textarea id="notes" name="notes" rows="5" class="form-control">{{person.notes or ''}}</textarea>
+        </div>
+      </div>
+      <div class="col-12 text-right">
+        <button type="submit" class="btn btn-warning">Update</button>
+      </div>
+    </div>
+  </form>
+{% endblock content %}

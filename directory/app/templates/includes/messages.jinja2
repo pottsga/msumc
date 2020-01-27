@@ -1,0 +1,17 @@
+{% if request.session.peek_flash() %}
+  {% for message in request.session.pop_flash() %}
+    {# show the message since there is a flash message #}
+
+    {% set alert_type = 'danger'  if 'error'    in message.lower() else
+    'success' if 'success'  in message.lower() else
+    'info'    if 'info'     in message.lower() else
+    'primary'
+    %}
+    <div class="alert alert-{{alert_type}} alert-dismissible fade show" role="alert">
+      {{message}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  {% endfor %}
+{% endif %}

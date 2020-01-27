@@ -1,0 +1,18 @@
+{% extends '../base_admin.jinja2' %}
+
+{% block content %}
+  <h1>Families <a class="btn btn-primary" href="{{request.route_url('family.add')}}">Add Family</a></h1>
+
+  {% if families|length == 0 %}
+    <p>No families found...</p>
+  {% endif %}
+
+  {% for family in families %}
+    <h2>
+      <a href="{{request.route_url('family.view', family_id=family.id)}}">
+        {{family.last_name}}
+      </a>
+    </h2>
+  {% endfor %}
+
+{% endblock content %}
