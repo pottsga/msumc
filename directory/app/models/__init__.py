@@ -8,6 +8,7 @@ import zope.sqlalchemy
 from directory.app.models.user import User
 from directory.app.models.person import Person
 from directory.app.models.family import Family
+from directory.app.models.ministry import Ministry
 
 # run configure_mappers after defining all of the models to ensure
 # all relationships can be setup

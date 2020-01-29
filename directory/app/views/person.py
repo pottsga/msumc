@@ -25,6 +25,8 @@ class PersonViews:
             .order_by(Person.last_name)\
             .all()
 
+        print(people)
+
         return {
             'people': people,
         }

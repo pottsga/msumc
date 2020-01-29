@@ -3,6 +3,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 from sqlalchemy.orm import exc
+from sqlalchemy import func
 
 from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPFound, HTTPNotFound
@@ -25,12 +26,19 @@ class FamilyViews:
             .order_by(Family.last_name)\
             .all()
 
-        last_names = request.dbsession.query(Family.last_name)\
-            .distinct()\
+        family_count = request.dbsession.query(Family.id, func.count(Person.id))\
+            .select_from(Family)\
+            .join(Person, Family.id == Person.family_id)\
+            .group_by(Family.last_name)\
             .all()
+
+        family_count = { family_id: count for family_id, count in family_count }
+
+        print(family_count)
 
         return {
             'families': families,
+            'family_count': family_count,
         }
 
     @view_config(route_name='family.view', renderer='../templates/family/view.jinja2')

@@ -4,6 +4,17 @@ def includeme(config):
     # Index
     config.add_route('index.index', '/')
 
+    # Contact
+    config.add_route('contact.index', '/contact')
+
+    # Contact
+    config.add_route('ministry.view_all', '/ministries') # to view on the main website
+    config.add_route('ministry.index', '/ministry')
+    config.add_route('ministry.add', '/ministry/add')
+    config.add_route('ministry.view', '/ministry/{ministry_id}/view')
+    config.add_route('ministry.update', '/ministry/update')
+    config.add_route('ministry.delete', '/ministry/delete')
+
     # Family
     config.add_route('family.index', '/family')
     config.add_route('family.add', '/family/add')

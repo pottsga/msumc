@@ -14,8 +14,10 @@
   <link rel="stylesheet" href="{{request.static_url('directory:app/static/vendor/bootstrap4/css/bootstrap.min.css')}}">
   <link rel="stylesheet" href="{{request.static_url('directory:app/static/vendor/jquery-ui/jquery-ui.min.css')}}">
   <link rel="stylesheet" href="{{request.static_url('directory:app/static/css/main.css')}}">
+  <link rel="stylesheet" href="{{request.static_url('directory:app/static/vendor/datatable/datatables.min.css')}}">
 </head>
 <body>
+
   {% set admin = true %}
   {% include './includes/navbar.jinja2' %}
 
@@ -34,9 +36,12 @@
   </div>
 
   <script src="{{request.static_url('directory:app/static/vendor/jquery/jquery-3.2.1.min.js')}}"></script>
+  <script src="{{request.static_url('directory:app/static/vendor/jquery-ui/jquery-ui.min.js')}}"></script>
+  <script src="{{request.static_url('directory:app/static/vendor/datatable/datatables.js')}}"></script>
   <script src="{{request.static_url('directory:app/static/vendor/popper/popper.min.js')}}"></script>
   <script src="{{request.static_url('directory:app/static/vendor/bootstrap4/js/bootstrap.min.js')}}"></script>
-  <script src="{{request.static_url('directory:app/static/vendor/jquery-ui/jquery-ui.min.js')}}"></script>
   <script src="{{request.static_url('directory:app/static/js/main.js')}}"></script>
+
+  {% block scripts %}{% endblock scripts %}
 </body>
 </html>

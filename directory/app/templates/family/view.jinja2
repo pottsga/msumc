@@ -129,7 +129,7 @@
       <h3>Adults/Parents</h3>
       <ul>
         {% for person in adults_parents %}
-          <li><a href="{{request.route_url('person.view', person_id=person.id)}}">{{person.first_name}}</a></li>
+          <li><a href="{{request.route_url('person.view', person_id=person.id)}}">{{person.first_name}} {% if person.last_name != family.last_name %}(<em>{{person.last_name}}</em>){% endif %}</a></li>
         {% endfor %}
       </ul>
       {% endif %}

@@ -21,3 +21,7 @@ h1, h2, h3, h4, h5, h6 {
   color: transparent;
   text-shadow: 0 0 0 var(--gray);
 }
+
+#sidebar_icon {
+  height: 250px;
+}
