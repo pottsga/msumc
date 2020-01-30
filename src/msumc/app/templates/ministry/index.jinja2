@@ -1,0 +1,30 @@
+{% extends '../base_admin.jinja2' %}
+
+{% block content %}
+  <h1>Ministry <a class="btn btn-primary" href="{{request.route_url('ministry.add')}}">Add Ministry</a></h1>
+
+  <table class="table table-sm table-bordered" id="person_datatable" style="width: 100%;">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Title</th>
+      </tr>   
+    </thead>
+    <tbody>
+      {% for ministry in ministries %}
+        <tr>
+          <td>
+            <a href="{{request.route_url('ministry.view', ministry_id=ministry.id)}}">
+              {{ministry.id}}
+            </a>
+          </td>
+          <td></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock content %}
+
+{% block scripts %}
+  <script src="{{request.static_url('msumc:app/static/js/person/index.js')}}"></script>
+{% endblock scripts %}
