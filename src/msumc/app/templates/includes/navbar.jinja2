@@ -48,16 +48,16 @@
       <div class="collapse navbar-collapse" id="links">
         <ul class="navbar-nav mx-auto">
           <li class="nav-item">
-            <a class="nav-link" href="{{request.route_url('index.index')}}">Home</a>
+            <a data-subject="index" class="nav-link" href="{{request.route_url('page.view_page', path='index')}}">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{request.route_url('contact.index')}}">Contact Us</a>
+            <a data-subject="contact_us" class="nav-link" href="{{request.route_url('page.view_page', path='contact_us')}}">Contact Us</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Our Staff</a>
+            <a data-subject="our_staff" class="nav-link" href="{{request.route_url('page.view_page', path='our_staff')}}">Our Staff</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{request.route_url('ministry.view_all')}}">Our Ministries</a>
+            <a data-subject="our_ministries" class="nav-link" href="#">Our Ministries</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="aboutUsDropdown" role="button" data-toggle="dropdown">

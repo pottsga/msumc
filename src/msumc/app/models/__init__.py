@@ -8,7 +8,7 @@ import zope.sqlalchemy
 from msumc.app.models.user import User
 from msumc.app.models.person import Person
 from msumc.app.models.family import Family
-from msumc.app.models.ministry import Ministry
+from msumc.app.models.page import Page
 
 # run configure_mappers after defining all of the models to ensure
 # all relationships can be setup

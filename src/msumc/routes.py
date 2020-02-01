@@ -2,18 +2,7 @@ def includeme(config):
     config.add_static_view(name='/static', path='msumc:app/static')
 
     # Index
-    config.add_route('index.index', '/')
-
-    # Contact
-    config.add_route('contact.index', '/contact')
-
-    # Contact
-    config.add_route('ministry.view_all', '/ministries') # to view on the main website
-    config.add_route('ministry.index', '/ministry')
-    config.add_route('ministry.add', '/ministry/add')
-    config.add_route('ministry.view', '/ministry/{ministry_id}/view')
-    config.add_route('ministry.update', '/ministry/update')
-    config.add_route('ministry.delete', '/ministry/delete')
+    config.add_route('index.index', '')
 
     # Family
     config.add_route('family.index', '/family')
@@ -35,3 +24,10 @@ def includeme(config):
     # Auth
     config.add_route('auth.login', '/auth/login')
     config.add_route('auth.logout', '/auth/logout')
+
+    # Page
+    config.add_route('page.index', '/page')
+    config.add_route('page.add', '/page/add')
+    config.add_route('page.view', '/page/{path}/view')
+    config.add_route('page.update', '/page/{path}/update')
+    config.add_route('page.view_page', '/{path}')

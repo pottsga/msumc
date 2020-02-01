@@ -1,0 +1,56 @@
+{% extends '../base_admin.jinja2' %}
+
+{% block breadcrumb %}
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active">Pages</li>
+    </ol>
+  </nav>
+{% endblock %}
+
+{% block content %}
+
+  <h1>Pages <a class="btn btn-primary" href="{{request.route_url('page.add')}}">Add Page</a></h1>
+
+  <table id="page_datatable" class="table table-sm table-bordered" style="width: 100%;">
+    <thead>
+      <tr>
+        <th>Path</th>
+        <th>Title</th>
+        <th>Created By</th>
+        <th>Created On</th>
+        <th>Updated By</th>
+        <th>Updated On</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for page in pages %}  
+        <tr>
+          <td>{{page.path}}</td>
+          <td>{{page.title}}</td>
+          <td>{{page.created_by if page.created_by else ''}}</td>
+          <td>{{page.created_on.strftime('%m/%d/%Y %I:%M %p') if page.created_on else ''}}</td>
+          <td>{{page.updated_by if page.updated_by else ''}}</td>
+          <td>{{page.updated_on.strftime('%m/%d/%Y %I:%M %p') if page.updated_on else ''}}</td>
+          <td>
+            <a href="{{request.route_url('page.view', path=page.path)}}">
+              View
+            </a>
+          </td>
+          <td>
+            <a href="{{request.route_url('page.view_page', path=page.path)}}">
+              View Page
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock content %}
+
+{% block scripts %}
+  <script src="{{request.static_url('msumc:app/static/js/page/index.js')}}"></script>
+{% endblock scripts %}

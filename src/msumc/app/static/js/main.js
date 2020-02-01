@@ -38,8 +38,6 @@ function addActiveClassToSelector(selector) {
 function addPhoneNumberValidation() {
   var phoneNumbers = document.querySelectorAll('.phone-number');
 
-  console.log(phoneNumbers)
-
   for (var i = 0; i < phoneNumbers.length; i++) {
     var phoneNumber = phoneNumbers[i];
 

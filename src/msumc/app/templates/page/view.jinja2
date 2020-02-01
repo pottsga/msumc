@@ -1,0 +1,50 @@
+{% extends '../base_admin.jinja2' %}
+
+{% block breadcrumb %}
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{request.route_url('page.index')}}">Pages</a></li>
+      <li class="breadcrumb-item active">Edit Page</li>
+    </ol>
+  </nav>
+{% endblock %}
+
+{% block content %}
+  <h1>Edit Page &mdash; {{page.title}}</h1>
+  <a href="{{request.route_url('page.view_page', path=page.path)}}">View Page</a>
+  <form action="{{request.route_url('page.update', path=page.path)}}" method="POST" class="my-2">
+    <div class="row">
+      <div class="col-12">
+        <div class="form-group">
+          <label for="path">Path</label>
+          <input type="text" id="path" name="path" class="form-control" value="{{page.path}}" pattern="[^\/]+" required>
+          <small class="form-text text-muted">The URL to access the page. <strong>NO SLASHES ALLOWED</strong>.</small>
+          <small class="form-text text-muted">Example: some-page.</small>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input type="text" id="title" name="title" class="form-control" value="{{page.title}}" required>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="form-group">
+          <label for="title">Body</label>
+          <div data-html="{{page.body}}" id="body"></div>
+          <input type="hidden" name="body" value="{{page.body}}">
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="form-group">
+          <button type="submit" class="btn btn-warning">Update</button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+{% endblock content %}
+
+{% block scripts %}
+  <script src="{{request.static_url('msumc:app/static/js/page/view.js')}}"></script>
+{% endblock scripts %}

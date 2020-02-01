@@ -11,10 +11,11 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans|Oswald&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="{{request.static_url('msumc:app/static/vendor/bootstrap4/css/bootstrap.min.css')}}">
   <link rel="stylesheet" href="{{request.static_url('msumc:app/static/vendor/jquery-ui/jquery-ui.min.css')}}">
-  <link rel="stylesheet" href="{{request.static_url('msumc:app/static/css/main.css')}}">
+  <link rel="stylesheet" href="{{request.static_url('msumc:app/static/vendor/bootstrap4/css/bootstrap.min.css')}}">
   <link rel="stylesheet" href="{{request.static_url('msumc:app/static/vendor/datatable/datatables.min.css')}}">
+  <link rel="stylesheet" href="{{request.static_url('msumc:app/static/vendor/summernote-master/dist/summernote-bs4.css')}}">
+  <link rel="stylesheet" href="{{request.static_url('msumc:app/static/css/main.css')}}">
 </head>
 <body>
 
@@ -27,6 +28,7 @@
         {% include './includes/sidebar.jinja2' %} 
       </div>
       <div class="col-lg-10">
+        {% block breadcrumb %}{% endblock breadcrumb %}
         {% include './includes/messages.jinja2' %}
         <main>
           {% block content %}{% endblock content %}
@@ -36,10 +38,11 @@
   </div>
 
   <script src="{{request.static_url('msumc:app/static/vendor/jquery/jquery-3.2.1.min.js')}}"></script>
-  <script src="{{request.static_url('msumc:app/static/vendor/jquery-ui/jquery-ui.min.js')}}"></script>
-  <script src="{{request.static_url('msumc:app/static/vendor/datatable/datatables.js')}}"></script>
   <script src="{{request.static_url('msumc:app/static/vendor/popper/popper.min.js')}}"></script>
+  <script src="{{request.static_url('msumc:app/static/vendor/jquery-ui/jquery-ui.min.js')}}"></script>
   <script src="{{request.static_url('msumc:app/static/vendor/bootstrap4/js/bootstrap.min.js')}}"></script>
+  <script src="{{request.static_url('msumc:app/static/vendor/datatable/datatables.js')}}"></script>
+  <script src="{{request.static_url('msumc:app/static/vendor/summernote-master/dist/summernote.js')}}"></script>
   <script src="{{request.static_url('msumc:app/static/js/main.js')}}"></script>
 
   {% block scripts %}{% endblock scripts %}

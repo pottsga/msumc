@@ -20,6 +20,9 @@ from msumc.app.models import (
 
 from msumc.app.models.meta import Base
 from msumc.app.models.user import User
+from msumc.app.models.page import Page
+
+from msumc.initial_html import pages
 
 def usage(argv):
     cmd = os.path.basename(argv[0])
@@ -55,5 +58,6 @@ def main(argv=sys.argv):
             created_on=datetime.datetime.now(),
             last_signed_in_on=datetime.datetime.now(),
         )
-
         dbsession.add(u)
+
+        dbsession.add_all(pages)
