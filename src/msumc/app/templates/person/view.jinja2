@@ -95,7 +95,7 @@
           <label for="last_name">Gender</label>
           <select id="gender" name="gender" class="form-control" required>
             <option {% if person.gender == 'M' %}selected{% endif %} value="M">Male</option>
-            <option {% if person.gender == 'M' %}selected{% endif %} value="F">Female</option>
+            <option {% if person.gender == 'F' %}selected{% endif %} value="F">Female</option>
           </select>
         </div>
       </div>

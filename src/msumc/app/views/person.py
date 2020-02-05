@@ -49,11 +49,20 @@ class PersonViews:
                     .one()
             except exc.NoResultFound as e:
                 raise HTTPNotFound
+
         self.person = None
         if person_id:
             try:
                 self.person = request.dbsession.query(Person)\
                     .filter(Person.id == person_id)\
+                    .one()
+
+            except exc.NoResultFound as e:
+                raise HTTPNotFound
+
+            try:
+                self.family = request.dbsession.query(Family)\
+                    .filter(Family.id == self.person.family_id)\
                     .one()
             except exc.NoResultFound as e:
                 raise HTTPNotFound
@@ -114,19 +123,19 @@ class PersonViews:
     def person_update_POST(self):
         request = self.request
 
-        self.person.is_child = is_child
-        self.person.is_active = is_active
-        self.person.family_id = family_id
-        self.person.first_name = first_name
-        self.person.last_name = last_name
-        self.person.gender = gender
-        self.person.phone_number = phone_number
-        self.person.email = email
-        self.person.notes = notes
-        self.person.birthday = birthday
+        self.person.is_child = self.is_child
+        self.person.is_active = self.is_active
+        self.person.family_id = self.family_id
+        self.person.first_name = self.first_name
+        self.person.last_name = self.last_name
+        self.person.gender = self.gender
+        self.person.phone_number = self.phone_number
+        self.person.email = self.email
+        self.person.notes = self.notes
+        self.person.birthday = self.birthday
 
         request.session.flash('INFO: Updated person')
-        return HTTPFound(request.route_url('person.view', person_id=person.id))
+        return HTTPFound(request.route_url('person.view', person_id=self.person.id))
 
     @view_config(route_name='person.delete')
     def person_delete(self):
