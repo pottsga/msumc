@@ -36,12 +36,12 @@
           <td>{{page.updated_on.strftime('%m/%d/%Y %I:%M %p') if page.updated_on else ''}}</td>
           <td>
             <a href="{{request.route_url('page.view', path=page.path)}}">
-              View
+              Edit
             </a>
           </td>
           <td>
             <a href="{{request.route_url('page.view_page', path=page.path)}}">
-              View Page
+              View on Website
             </a>
           </td>
         </tr>

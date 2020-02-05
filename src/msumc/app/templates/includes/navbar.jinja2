@@ -54,20 +54,15 @@
             <a data-subject="contact_us" class="nav-link" href="{{request.route_url('page.view_page', path='contact_us')}}">Contact Us</a>
           </li>
           <li class="nav-item">
-            <a data-subject="our_staff" class="nav-link" href="{{request.route_url('page.view_page', path='our_staff')}}">Our Staff</a>
-          </li>
-          <li class="nav-item">
-            <a data-subject="our_ministries" class="nav-link" href="#">Our Ministries</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="aboutUsDropdown" role="button" data-toggle="dropdown">
               About Us
             </a>
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="#">Our Ministries</a>
-              <a class="dropdown-item" href="#">Our History</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Something else here</a>
+              <a data-subject="our_staff" class="dropdown-item" href="{{request.route_url('page.view_page', path='our_staff')}}">Our Staff</a>
+              <a data-subject="our_ministries" class="dropdown-item" href="{{request.route_url('page.view_page', path='our_ministries')}}">Our Ministries</a>
+              <a data-subject="our_history" class="dropdown-item" href="{{request.route_url('page.view_page', path='our_history')}}">Our History</a>
             </div>
           </li>
           <li class="nav-item dropdown">
@@ -79,7 +74,6 @@
               <a class="dropdown-item" href="#">2</a>
             </div>
           </li>
-          
           <li class="nav-item">
             <a class="nav-link" href="#">Links</a>
           </li>

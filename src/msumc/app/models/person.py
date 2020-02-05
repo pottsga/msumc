@@ -22,8 +22,9 @@ class Person(Base):
     phone_number = Column(String(128))
     email = Column(String(128))
     gender = Column(Enum('M', 'F'))
-    is_child = Column(Boolean, nullable=False, default=False)
     birthday = Column(Date)
+    is_child = Column(Boolean, nullable=False, default=False)
+    is_active = Column(Boolean, nullable=False)
 
     notes = Column(String(1000))
     created_on = Column(DateTime, nullable=False)

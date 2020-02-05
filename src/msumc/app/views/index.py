@@ -15,4 +15,3 @@ class IndexViews:
     def index_index(self):
         request = self.request
         return HTTPFound(request.route_url('page.view_page', path='index'))
-

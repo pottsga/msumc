@@ -55,7 +55,14 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-6"></div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <div class="custom-control custom-switch">
+            <input type="checkbox" id="is_active" name="is_active" class="custom-control-input" {% if person.is_active %}checked{% endif %}>
+            <label class="custom-control-label" for="is_active">Is Active?</label>
+          </div>
+        </div>
+      </div>
       <div class="col-lg-6">
         <div class="form-group">
           <label for="family_id">Family</label>

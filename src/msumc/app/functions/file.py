@@ -15,7 +15,6 @@ def write_file(base_dir, file):
 
     '''
     try:
-        print(type(file))
         filename, filetype = file.filename.split('.')
         filename = f'{uuid.uuid4()}.{filetype}'
         fp = os.path.join(base_dir, filename)

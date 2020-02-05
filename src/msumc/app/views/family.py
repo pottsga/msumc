@@ -17,10 +17,36 @@ from msumc.app.models.person import Person
 
 @view_defaults(permission='administrate')
 class FamilyViews:
-
     def __init__(self, request):
         self.request = request
         self.image_base_dir = f'{os.getcwd()}/msumc/app/static/img/family/'
+
+        family_id = request.matchdict.get('family_id')
+
+        married_on = request.parameters.get('married_on', None)
+        self.last_name = request.parameters.get('last_name', None)
+        self.married_on = datetime.datetime.strptime(married_on, '%m/%d/%Y') if married_on is not None else None
+        self.street1 = request.parameters.get('street1', None)
+        self.street2 = request.parameters.get('street2', None)
+        self.city = request.parameters.get('city', None)
+        self.state = request.parameters.get('state', None)
+        self.zipcode = request.parameters.get('zipcode', None)
+        self.photo = request.parameters.get('photo', None)
+        self.notes = request.parameters.get('notes', None)
+        self.photo = request.parameters.get('photo', None)
+
+        self.photo_fp = None
+        if self.photo != b'':
+            self.photo_fp = file.write_file(self.image_base_dir, self.photo)
+
+        self.family = None
+        if family_id:
+            try:
+                self.family = request.dbsession.query(Family)\
+                    .filter(Family.id == family_id)\
+                    .one()
+            except exc.NoResultFound as e:
+                raise HTTPNotFound
 
     @view_config(route_name='family.index', renderer='../templates/family/index.jinja2')
     def family_index(self):
@@ -82,96 +108,47 @@ class FamilyViews:
     def family_add_POST(self):
         request = self.request
 
-        try:
-            last_name = request.parameters.get('last_name', None)
-            married_on = request.parameters.get('married_on', None)
-            married_on = datetime.datetime.strptime(married_on, '%m/%d/%Y') if married_on is not None else None
-            street1 = request.parameters.get('street1', None)
-            street2 = request.parameters.get('street2', None)
-            city = request.parameters.get('city', None)
-            state = request.parameters.get('state', None)
-            zipcode = request.parameters.get('zipcode', None)
-            photo = request.parameters.get('photo', None)
-            notes = request.parameters.get('notes', None)
-            active = request.parameters.get('active', None)
-            active = True if active == 'on' else False
-            photo = request.parameters.get('photo', None)
-            photo_fp = None
+        family = Family(
+            last_name=self.last_name,
+            married_on=self.married_on,
+            street1=self.street1,
+            street2=self.street2,
+            city=self.city,
+            state=self.state,
+            zipcode=self.zipcode,
+            notes=self.notes,
+            photo_fp=self.photo_fp,
+            created_on=datetime.datetime.now(),
+            created_by=request.authenticated_userid,
+        )
 
-            if photo != b'':
-                photo_fp = file.write_file(self.image_base_dir, photo)
+        request.dbsession.add(family)
+        request.dbsession.flush()
 
-            family = Family(
-                active=active,
-                last_name=last_name,
-                married_on=married_on,
-                street1=street1,
-                street2=street2,
-                city=city,
-                state=state,
-                zipcode=zipcode,
-                notes=notes,
-                photo_fp=photo_fp,
-                created_on=datetime.datetime.now(),
-                created_by=request.authenticated_userid,
-            )
-
-            request.dbsession.add(family)
-            request.dbsession.flush()
-
-            request.session.flash('INFO: Added family')
-            return HTTPFound(request.route_url('family.view', family_id=family.id))
-        except Exception as e:
-            raise e
+        request.session.flash('INFO: Added family')
+        return HTTPFound(request.route_url('family.view', family_id=family.id))
 
     @view_config(route_name='family.update', request_method="POST")
     def family_update(self):
         request = self.request
 
-        try:
-            family_id = request.matchdict.get('family_id')
+        self.family.last_name = self.last_name
+        self.family.married_on = self.married_on
+        self.family.street1 = self.street1
+        self.family.street2 = self.street2
+        self.family.city = self.city
+        self.family.state = self.state
+        self.family.zipcode = self.zipcode
+        self.family.notes = self.notes
 
-            last_name = request.parameters.get('last_name', None)
-            married_on = request.parameters.get('married_on', None)
-            married_on = datetime.datetime.strptime(married_on, '%m/%d/%Y') if married_on is not None else None
-            street1 = request.parameters.get('street1', None)
-            street2 = request.parameters.get('street2', None)
-            city = request.parameters.get('city', None)
-            state = request.parameters.get('state', None)
-            zipcode = request.parameters.get('zipcode', None)
-            photo = request.parameters.get('photo', None)
-            notes = request.parameters.get('notes', None)
-            active = request.parameters.get('active', None)
-            active = True if active == 'on' else False
-            photo = request.parameters.get('photo', None)
-            photo_fp = None
+        if self.photo != b'':
+            file.remove_file(self.family.photo_fp) # remove the old file from the system
+            photo_fp = file.write_file(self.image_base_dir, self.photo) # add the new file to the system
 
-            family = request.dbsession.query(Family)\
-                .filter(Family.id == family_id)\
-                .one()
+            self.family.photo_fp = photo_fp
 
-            family.last_name = last_name
-            family.married_on = married_on
-            family.street1 = street1
-            family.street2 = street2
-            family.city = city
-            family.state = state
-            family.zipcode = zipcode
-            family.notes = notes
-            family.active = active
-
-            if photo != b'':
-                file.remove_file(family.photo_fp) # remove the old file from the system
-                photo_fp = file.write_file(self.image_base_dir, photo) # add the new file to the system
-
-                family.photo_fp = photo_fp
-
-            request.session.flash('INFO: Updated family')
-            return HTTPFound(request.route_url('family.view', family_id=family.id))
-        except exc.NoResultFound as e:
-            raise HTTPNotFound
-        except Exception as e:
-            raise e
+        request.session.flash('INFO: Updated family')
+        return HTTPFound(request.route_url('family.view', family_id=self.family.id))
 
     @view_config(route_name='family.delete')
     def family_delete(self):

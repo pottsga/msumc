@@ -5,6 +5,7 @@ from pyramid.view import view_config, view_defaults
 
 from msumc.app.models.user import User
 
+@view_defaults(permission='administrate')
 class AdminViews:
 
     def __init__(self, request):

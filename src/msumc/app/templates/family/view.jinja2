@@ -1,5 +1,14 @@
 {% extends '../base_admin.jinja2' %}
 
+{% block breadcrumb %}
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{request.route_url('family.index')}}">Families</a></li>
+      <li class="breadcrumb-item active">{{family.last_name}}</li>
+    </ol>
+  </nav>
+{% endblock %}
+
 {% block content %}
   <h1>
     {{family.last_name}} Family - View 
@@ -57,15 +66,6 @@
       <h2>Family Details</h2>
       <form action="{{request.route_url('family.update', family_id=family.id)}}" enctype="multipart/form-data" method="POST">
         <div class="row">
-          <div class="col-lg-6">
-            <div class="form-group">
-              <div class="custom-control custom-switch">
-                <input type="checkbox" id="active" name="active" class="custom-control-input" {% if family.active %}checked{% endif %}>
-                <label class="custom-control-label" for="active">Active?</label>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6"></div>
           <div class="col-lg-6">
             <div class="form-group">
               <label for="last_name">Last Name</label>

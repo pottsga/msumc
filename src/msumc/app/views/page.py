@@ -48,7 +48,7 @@ class PageViews:
             'title': self.page.title,
         }
 
-    @view_config(route_name='page.index', renderer='../templates/page/index.jinja2')
+    @view_config(route_name='page.index', renderer='../templates/page/index.jinja2', permission='administrate')
     def page_index(self):
         request = self.request
 

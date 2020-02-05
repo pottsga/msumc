@@ -1,5 +1,13 @@
 {% extends '../base_admin.jinja2' %}
 
+{% block breadcrumb %}
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active">Families</li>
+    </ol>
+  </nav>
+{% endblock %}
+
 {% block content %}
   <h1>Families <a class="btn btn-primary" href="{{request.route_url('family.add')}}">Add Family</a></h1>
 
@@ -7,7 +15,6 @@
     <thead>
       <tr>
         <th>Last Name</th>
-        <th>Active?</th>
         <th>Photo?</th>
         <th># Family Members</th>
       </tr>   
@@ -20,9 +27,8 @@
               {{family.last_name}}
             </a>
           </td>
-          <td>{{'Yes ✓' if family.active else 'No ✗'}}</td>
           <td>{{'Yes ✓' if family.photo_fp else 'No ✗'}}</td>
-          <td>{{family_count.get(family.id, '')}}</td>
+          <td>{{family_count.get(family.id, 0)}}</td>
         </tr>
       {% endfor %}
     </tbody>
