@@ -8,6 +8,22 @@ h1, h2, h3, h4, h5, h6 {
   padding-bottom: 15px;
 }
 
+footer {
+  background: #000;
+  min-height: 20vh;
+  color: white;
+  padding: 20px;
+}
+
+footer address strong {
+  font-weight: 800;
+  text-decoration: underline;
+}
+
+main {
+  min-height: calc(100vh - (126px + 56px)); /* 100vh - (height_of_top_nav + height_of_bottom_nav) */
+}
+
 .navbar-brand img {
   height: 70px;
 }
@@ -17,11 +33,15 @@ h1, h2, h3, h4, h5, h6 {
   content: " *";
 }
 
+
 #username::after {
   content: " \01F464";
   color: transparent;
   text-shadow: 0 0 0 var(--gray);
 }
 
-#service_schedule {
-}
+@media only screen and (min-width: 992px) {
+  .navbar-brand img {
+    height: 100px;
+  }
+} 

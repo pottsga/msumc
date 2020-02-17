@@ -9,7 +9,7 @@ from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 
 from msumc.app.models.user import User
-from msumc.app.models.family import Family
+from msumc.app.models.household import Household
 from msumc.app.models.person import Person
 
 @view_defaults(permission='administrate')
@@ -17,17 +17,18 @@ class PersonViews:
     def __init__(self, request):
         self.request = request
 
-        family_id = request.parameters.get('family_id', None)
+        household_id = request.parameters.get('household_id', None)
         person_id = request.matchdict.get('person_id', None)
 
-        is_child = request.parameters.get('is_child', None)
         is_active = request.parameters.get('is_active', None)
+        is_deceased = request.parameters.get('is_deceased', None)
         birthday = request.parameters.get('birthday', None)
 
-        self.is_child = True if is_child == 'on' else False
         self.is_active = True if is_active == 'on' else False
-        self.family_id = int(family_id) if family_id else None
+        self.is_deceased = True if is_deceased == 'on' else False
+        self.household_id = int(household_id) if household_id else None
         self.first_name = request.parameters.get('first_name', None)
+        self.familial_relationship = request.parameters.get('familial_relationship', None)
         self.last_name = request.parameters.get('last_name', None)
         self.position = request.parameters.get('position', None)
         self.gender = request.parameters.get('gender', None)
@@ -38,14 +39,14 @@ class PersonViews:
         self.people = request.dbsession.query(Person)\
             .all()
 
-        self.families = request.dbsession.query(Family)\
+        self.households = request.dbsession.query(Household)\
             .all()
 
-        self.family = None
-        if family_id:
+        self.household = None
+        if household_id:
             try:
-                self.family = request.dbsession.query(Family)\
-                    .filter(Family.id == family_id)\
+                self.household = request.dbsession.query(Household)\
+                    .filter(Household.id == household_id)\
                     .one()
             except exc.NoResultFound as e:
                 raise HTTPNotFound
@@ -61,8 +62,8 @@ class PersonViews:
                 raise HTTPNotFound
 
             try:
-                self.family = request.dbsession.query(Family)\
-                    .filter(Family.id == self.person.family_id)\
+                self.household = request.dbsession.query(Household)\
+                    .filter(Household.id == self.person.household_id)\
                     .one()
             except exc.NoResultFound as e:
                 raise HTTPNotFound
@@ -80,9 +81,9 @@ class PersonViews:
         request = self.request
 
         return {
-            'family_id': self.family_id,
-            'families': self.families,
-            'family': self.family,
+            'household_id': self.household_id,
+            'households': self.households,
+            'household': self.household,
         }
 
     @view_config(route_name='person.add', request_method='POST')
@@ -90,9 +91,10 @@ class PersonViews:
         request = self.request
 
         person = Person(
-            is_child=self.is_child,
             is_active=self.is_active,
-            family_id=self.family_id,
+            is_deceased=self.is_deceased,
+            household_id=self.household_id,
+            familial_relationship=self.familial_relationship,
             first_name=self.first_name,
             last_name=self.last_name,
             gender=self.gender,
@@ -107,7 +109,7 @@ class PersonViews:
         request.dbsession.flush()
 
         request.session.flash('INFO: Added person')
-        return HTTPFound(request.route_url('family.view', family_id=person.family_id))
+        return HTTPFound(request.route_url('household.view', household_id=person.household_id))
 
     @view_config(route_name='person.view', renderer='../templates/person/view.jinja2')
     def person_view(self):
@@ -115,17 +117,18 @@ class PersonViews:
 
         return {
             'person': self.person,
-            'family': self.family,
-            'families': self.families,
+            'household': self.household,
+            'households': self.households,
         }
 
     @view_config(route_name='person.update', request_method='POST')
     def person_update_POST(self):
         request = self.request
 
-        self.person.is_child = self.is_child
         self.person.is_active = self.is_active
-        self.person.family_id = self.family_id
+        self.person.is_deceased = self.is_deceased
+        self.person.household_id = self.household_id
+        self.person.familial_relationship = self.familial_relationship
         self.person.first_name = self.first_name
         self.person.last_name = self.last_name
         self.person.gender = self.gender
@@ -147,4 +150,4 @@ class PersonViews:
             .delete()
 
         request.session.flash('INFO: Deleted person')
-        return HTTPFound(request.route_url('family.view', family_id=self.person.family_id))
+        return HTTPFound(request.route_url('household.view', household_id=self.person.household_id))

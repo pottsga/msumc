@@ -1,5 +1,14 @@
 {% extends '../base_admin.jinja2' %}
 
+{% block breadcrumb %}
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{request.route_url('person.index')}}">People</a></li>
+      <li class="breadcrumb-item active">View</li>
+    </ol>
+  </nav>
+{% endblock %}
+
 {% block content %}
   <h1>
     {{person.first_name}} {{person.last_name}} - View 
@@ -11,8 +20,8 @@
         Show Additional Details
       </a>
       <a class="btn btn-info" 
-         href="{{request.route_url('family.view', family_id=family.id)}}">
-        View Family
+         href="{{request.route_url('household.view', household_id=household.id)}}">
+        View Household
       </a>
       <a class="btn btn-danger" 
          href="{{request.route_url('person.delete', person_id=person.id)}}" 
@@ -38,8 +47,8 @@
           <td><code>{{person.id}}</code></td>
         </tr>
         <tr>
-          <th>Family ID</th>
-          <td><code>{{person.family_id}}</code></td>
+          <th>Household ID</th>
+          <td><code>{{person.household_id}}</code></td>
         </tr>
       </table>
     </div>
@@ -47,15 +56,7 @@
 
   <form action="{{request.route_url('person.update', person_id=person.id)}}" method="POST">
     <div class="row">
-      <div class="col-lg-6">
-        <div class="form-group">
-          <div class="custom-control custom-switch">
-            <input type="checkbox" id="is_child" name="is_child" class="custom-control-input" {% if person.is_child %}checked{% endif %}>
-            <label class="custom-control-label" for="is_child">Is Child?</label>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-6">
+      <div class="col-12">
         <div class="form-group">
           <div class="custom-control custom-switch">
             <input type="checkbox" id="is_active" name="is_active" class="custom-control-input" {% if person.is_active %}checked{% endif %}>
@@ -63,15 +64,23 @@
           </div>
         </div>
       </div>
+      <div class="col-12">
+        <div class="form-group">
+          <div class="custom-control custom-switch">
+            <input type="checkbox" id="is_deceased" name="is_deceased" class="custom-control-input" {% if person.is_deceased %}checked{% endif %}>
+            <label class="custom-control-label" for="is_deceased">Deceased?</label>
+          </div>
+        </div>
+      </div>
       <div class="col-lg-6">
         <div class="form-group">
-          <label for="family_id">Family</label>
-          <select id="family_id" name="family_id" class="form-control" required>
+          <label for="household_id">Household</label>
+          <select id="household_id" name="household_id" class="form-control" required>
             <option value=""></option>
-            {% for family in families %}
-              <option value="{{family.id}}"
-                {% if family.id == person.family_id %}selected{% endif %}>
-                {{family.last_name}}
+            {% for household in households %}
+              <option value="{{household.id}}"
+                {% if household.id == person.household_id %}selected{% endif %}>
+                {{household.last_name}}
               </option>
             {% endfor %}
           </select>
@@ -80,14 +89,22 @@
       <div class="col-lg-6"></div>
       <div class="col-lg-6">
         <div class="form-group">
+          <label for="familial_relationship">Familial Relationship</label>
+          <input type="text" id="familial_relationship" name="familial_relationship" class="form-control" value="{{person.familial_relationship or ''}}">
+          <small class="form-text text-muted">Ex: Husband, Wife, Daughter, Son, Grandson, Granddaughter, etc.</small>
+        </div>
+      </div>
+      <div class="col-lg-6"></div>
+      <div class="col-lg-6">
+        <div class="form-group">
           <label for="first_name">First Name</label>
-          <input type="text" id="first_name" name="first_name" class="form-control" value="{{person.first_name}}" required>
+          <input type="text" id="first_name" name="first_name" class="form-control" value="{{person.first_name or ''}}" required>
         </div>
       </div>
       <div class="col-lg-6">
         <div class="form-group">
           <label for="last_name">Last Name</label>
-          <input type="text" id="last_name" name="last_name" class="form-control" value="{{person.last_name}}" required>
+          <input type="text" id="last_name" name="last_name" class="form-control" value="{{person.last_name or ''}}" required>
         </div>
       </div>
       <div class="col-lg-6">

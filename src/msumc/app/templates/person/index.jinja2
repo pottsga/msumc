@@ -1,5 +1,13 @@
 {% extends '../base_admin.jinja2' %}
 
+{% block breadcrumb %}
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active">People</li>
+    </ol>
+  </nav>
+{% endblock %}
+
 {% block content %}
   <h1>Person <a class="btn btn-primary" href="{{request.route_url('person.add')}}">Add Person</a></h1>
 

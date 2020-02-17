@@ -1,37 +1,12 @@
 <nav class="navbar navbar-expand-lg navbar-light">
   <div class="container">
-    <button 
-       class="navbar-toggler" 
-       type="button" 
-       data-toggle="collapse" 
-       data-target="#navbarToggler">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
     <a class="navbar-brand" href="{{request.route_url('index.index')}}">
       <img src="{{request.static_url('msumc:app/static/img/Logo.png')}}" alt="MSUMC">
     </a>
-
-    <div class="collapse navbar-collapse" id="navbarToggler">
-      <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-        {% if request.authenticated_userid %}
-          <li class="nav-item">
-            <span class="navbar-text" id="username">{{request.authenticated_userid}}</span>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{request.route_url('auth.logout')}}">Logout</a>
-          </li>
-        {% else %}
-          <li class="nav-item">
-            <a class="nav-link" href="{{request.route_url('auth.login')}}">Login</a>
-          </li>
-        {% endif %}
-      </ul>
-    </div>
   </div>
 </nav>
 
-{% if not admin %}
+{% if layout != 'base_admin' %}
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
       <button 
@@ -54,6 +29,7 @@
             <a data-subject="contact_us" class="nav-link" href="{{request.route_url('page.view_page', path='contact_us')}}">Contact Us</a>
           </li>
           <li class="nav-item">
+            <a data-subject="calendar" class="nav-link" href="{{request.route_url('page.view_page', path='calendar')}}">Calendar</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="aboutUsDropdown" role="button" data-toggle="dropdown">
@@ -70,23 +46,59 @@
               Groups
             </a>
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="#">United Methodist Men</a>
-              <a class="dropdown-item" href="#">United Methodist Women</a>
-              <a class="dropdown-item" href="#">Main Street Youth</a>
-              <a class="dropdown-item" href="#">The Goodtimers</a>
-              <a class="dropdown-item" href="#">Healing Hands Ministry</a>
+              <a class="dropdown-item" href="{{request.route_url('page.view_page', path='group-united_methodist_men')}}">United Methodist Men</a>
+              <a class="dropdown-item" href="{{request.route_url('page.view_page', path='group-united_methodist_women')}}">United Methodist Women</a>
+              <a class="dropdown-item" href="{{request.route_url('page.view_page', path='group-main_street_youth')}}">Main Street Youth</a>
+              <a class="dropdown-item" href="{{request.route_url('page.view_page', path='group-the_goodtimers')}}">The Goodtimers</a>
+              <a class="dropdown-item" href="{{request.route_url('page.view_page', path='group-healing_hands_ministry')}}">Healing Hands Ministry</a>
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Links</a>
+            <a data-subject="links" class="nav-link" href="{{request.route_url('page.view_page', path='links')}}">Links</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Newsletters</a>
+            <a data-subject="newsletters" class="nav-link" href="{{request.route_url('page.view_page', path='newsletters')}}">Newsletters</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Sermons</a>
+            <a data-subject="sermons" class="nav-link" href="{{request.route_url('page.view_page', path='sermons')}}">Sermons</a>
           </li>
-          {% if request.authenticated_userid %}
+          <li class="nav-item dropdown d-lg-none d-block">
+            <a class="nav-link dropdown-toggle" href="#" id="scheduleDropdown" role="button" data-toggle="dropdown">
+              Sunday Service Schedule
+            </a>
+            <div class="dropdown-menu">
+              <span class="dropdown-item">
+                {% include './sidebar.jinja2' %}
+              </span>
+            </div>
+          </li>
+          {% if not request.authenticated_userid %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{request.route_url('auth.login')}}">Login</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  {% if request.authenticated_userid %}
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <button 
+           class="navbar-toggler" 
+           type="button" 
+           data-toggle="collapse" 
+           data-target="#admin_links" 
+           aria-controls="admin_links" 
+           aria-expanded="false" 
+           aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="admin_links">
+          <ul class="navbar-nav mx-auto">
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="aboutUsDropdown" role="button" data-toggle="dropdown">
                 Admin
@@ -95,12 +107,17 @@
                 <a class="dropdown-item" href="{{request.route_url('admin.index')}}">Admin Site</a>
               </div>
             </li>
-          {% endif %}
-          <li class="nav-item d-lg-none d-block">
-            {% include './sidebar.jinja2' %}
-          </li>
-        </ul>
+            <li class="nav-item">
+              <span class="navbar-text" id="username">{{request.authenticated_userid}}</span>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{request.route_url('auth.logout')}}">Logout</a>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-  </nav>
+    </nav>
+  {% endif %}
 {% endif %}
+
+

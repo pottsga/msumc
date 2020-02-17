@@ -7,7 +7,7 @@ import zope.sqlalchemy
 # Base.metadata prior to any initialization routines
 from msumc.app.models.user import User
 from msumc.app.models.person import Person
-from msumc.app.models.family import Family
+from msumc.app.models.household import Household
 from msumc.app.models.page import Page
 
 # run configure_mappers after defining all of the models to ensure

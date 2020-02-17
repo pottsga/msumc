@@ -4,12 +4,12 @@ def includeme(config):
     # Index
     config.add_route('index.index', '')
 
-    # Family
-    config.add_route('family.index', '/family')
-    config.add_route('family.add', '/family/add')
-    config.add_route('family.view', '/family/{family_id}/view')
-    config.add_route('family.update', '/family/{family_id}/update')
-    config.add_route('family.delete', '/family/{family_id}/delete')
+    # Household
+    config.add_route('household.index', '/household')
+    config.add_route('household.add', '/household/add')
+    config.add_route('household.view', '/household/{household_id}/view')
+    config.add_route('household.update', '/household/{household_id}/update')
+    config.add_route('household.delete', '/household/{household_id}/delete')
 
     # Person
     config.add_route('person.index', '/person')

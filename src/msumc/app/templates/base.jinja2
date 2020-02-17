@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="{{request.static_url('msumc:app/static/vendor/datatable/datatables.min.css')}}">
 </head>
 <body>
-  {% set admin = false %}
+  {% set layout = 'base' %}
   {% include './includes/navbar.jinja2' %}
 
   <div class="container my-3">
@@ -33,6 +33,8 @@
       </div>
     </div>
   </div>
+
+  {% include './includes/footer.jinja2' %}
 
   <script src="{{request.static_url('msumc:app/static/vendor/jquery/jquery-3.2.1.min.js')}}"></script>
   <script src="{{request.static_url('msumc:app/static/vendor/jquery-ui/jquery-ui.min.js')}}"></script>

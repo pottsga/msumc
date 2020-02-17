@@ -18,8 +18,7 @@
   <link rel="stylesheet" href="{{request.static_url('msumc:app/static/css/main.css')}}">
 </head>
 <body>
-
-  {% set admin = true %}
+  {% set layout = 'base_admin' %}
   {% include './includes/navbar.jinja2' %}
 
   <div class="container my-3">
