@@ -1,0 +1,29 @@
+{% extends '../base_admin.jinja2' %}
+
+{% block breadcrumb %}
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{request.route_url('upload.index')}}">Uploads</a></li>
+      <li class="breadcrumb-item active">Add</li>
+    </ol>
+  </nav>
+{% endblock %}
+
+{% block content %}
+  <h1>Upload - Add</h1>
+  <p>Add an upload to the system to be able to link to the file within the application.</p>
+
+  <form action="{{request.route_url('upload.add')}}" enctype="multipart/form-data" method="POST">
+    <div class="row">
+      <div class="col-12">
+        <div class="form-group">
+          <label for="file">Upload</label>
+          <input type="file" class="form-control" name="upload" id="upload" required>
+        </div>
+      </div>
+      <div class="col-12 text-right">
+        <button type="submit" class="btn btn-primary">Add</button>
+      </div>
+    </div>
+  </form>
+{% endblock content %}

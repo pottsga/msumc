@@ -12,14 +12,14 @@
 {% block content %}
   <h1>Edit Page &mdash; {{page.title}}</h1>
   <a href="{{request.route_url('page.view_page', path=page.path)}}">View on Website</a>
-  <form action="{{request.route_url('page.update', path=page.path)}}" method="POST" class="my-2">
+  <form action="{{request.route_url('page.update', page_id=page.id)}}" method="POST" class="my-2">
     <div class="row">
       <div class="col-12">
         <div class="form-group">
           <label for="path">Path</label>
           <input type="text" id="path" name="path" class="form-control" value="{{page.path}}" pattern="[^\/]+" required>
-          <small class="form-text text-muted">The URL to access the page. <strong>NO SLASHES ALLOWED</strong>.</small>
-          <small class="form-text text-muted">Example: some-page.</small>
+          <small class="form-text text-muted">The URL to access the page.</small>
+          <small class="form-text text-muted">Example: <code>/path/to/some-page</code>.</small>
         </div>
       </div>
       <div class="col-12">

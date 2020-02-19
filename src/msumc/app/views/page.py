@@ -3,6 +3,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 from sqlalchemy.orm import exc
+from sqlalchemy import or_
 
 from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 from pyramid.view import view_config, view_defaults
@@ -16,6 +17,7 @@ class PageViews:
         self.request = request
 
         self.path = request.params.get('path', None)
+
         self.title = request.params.get('title', None)
         self.body = request.params.get('body', None)
 
@@ -23,11 +25,19 @@ class PageViews:
             .all()
 
         path = request.matchdict.get('path')
+        page_id = request.matchdict.get('page_id')
 
-        if path:
+        page = None
+
+        if path or page_id:
             try:
                 self.page = request.dbsession.query(Page)\
-                    .filter(Page.path == path)\
+                    .filter(
+                        or_(
+                            Page.path == path,
+                            Page.id == page_id,
+                        )
+                    )\
                     .one()
             except exc.NoResultFound as e:
                 raise HTTPNotFound
@@ -89,9 +99,10 @@ class PageViews:
             created_on=datetime.datetime.now(),
         )
         request.dbsession.add(p)
+        request.dbsession.flush()
 
         request.session.flash(f'INFO: Added page {p.path}')
-        return HTTPFound(request.route_url('page.view', path=p.path))
+        return HTTPFound(request.route_url('page.view', page_id=p.id))
 
     @view_config(route_name='page.update', request_method='POST', permission='administrate')
     def page_update(self):
@@ -104,4 +115,4 @@ class PageViews:
         self.page.updated_on = datetime.datetime.now()
 
         request.session.flash(f'INFO: Updated page {self.page.path}')
-        return HTTPFound(request.route_url('page.view', path=self.page.path))
+        return HTTPFound(request.route_url('page.view', page_id=self.page.id))

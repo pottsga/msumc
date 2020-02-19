@@ -9,6 +9,7 @@ from msumc.app.models.user import User
 from msumc.app.models.person import Person
 from msumc.app.models.household import Household
 from msumc.app.models.page import Page
+from msumc.app.models.upload import Upload
 
 # run configure_mappers after defining all of the models to ensure
 # all relationships can be setup

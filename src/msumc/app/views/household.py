@@ -31,7 +31,6 @@ class HouseholdViews:
         self.city = request.parameters.get('city', None)
         self.state = request.parameters.get('state', None)
         self.zipcode = request.parameters.get('zipcode', None)
-        self.photo = request.parameters.get('photo', None)
         self.notes = request.parameters.get('notes', None)
         self.photo = request.parameters.get('photo', None)
 

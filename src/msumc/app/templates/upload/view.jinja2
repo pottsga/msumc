@@ -1,0 +1,56 @@
+{% extends '../base_admin.jinja2' %}
+
+{% block breadcrumb %}
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{request.route_url('upload.index')}}">Upload</a></li>
+      <li class="breadcrumb-item active">{{upload.id}}</li>
+    </ol>
+  </nav>
+{% endblock %}
+
+{% block content %}
+  <h1>
+    {{upload.id}} Upload - View
+    <span class="ml-auto">
+      <a class="btn btn-secondary" 
+         data-toggle="collapse" 
+         href="#details" 
+         role="button">
+        Show Additional Details
+      </a>
+      <a class="btn btn-danger" 
+         href="{{request.route_url('upload.delete', upload_id=upload.id)}}" 
+         onclick="return confirm('Are you sure you want to delete this upload?');">
+        Delete Upload
+      </a>
+    </span>
+  </h1>
+
+  <div class="collapse my-2" id="details">
+    <div class="card card-body">
+      <table class="table table-sm table-bordered">
+        <tr>
+          <th>Created on</th>
+          <td><code>{{upload.created_on.strftime('%m/%d/%Y %I:%M %p')}}</code></td>
+        </tr>
+        <tr>
+          <th>Created by</th>
+          <td><code>{{upload.created_by}}</code></td>
+        </tr>
+        <tr>
+          <th>ID</th>
+          <td><code>{{upload.id}}</code></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <h2>Upload Details</h2>
+      <p>Link: <code>{{request.static_url('msumc:app/static/uploads/' + upload.fp.split('/')[-1])}}</code></p>
+      <a target="_blank" href="{{request.static_url('msumc:app/static/uploads/' + upload.fp.split('/')[-1])}}">View Upload</a>
+    </div>
+  </div>
+{% endblock content %}

@@ -46,11 +46,11 @@
               Groups
             </a>
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="{{request.route_url('page.view_page', path='group-united_methodist_men')}}">United Methodist Men</a>
-              <a class="dropdown-item" href="{{request.route_url('page.view_page', path='group-united_methodist_women')}}">United Methodist Women</a>
-              <a class="dropdown-item" href="{{request.route_url('page.view_page', path='group-main_street_youth')}}">Main Street Youth</a>
-              <a class="dropdown-item" href="{{request.route_url('page.view_page', path='group-the_goodtimers')}}">The Goodtimers</a>
-              <a class="dropdown-item" href="{{request.route_url('page.view_page', path='group-healing_hands_ministry')}}">Healing Hands Ministry</a>
+              <a class="dropdown-item" href="{{request.route_url('page.view_page', path='group/united-methodist-men')}}">United Methodist Men</a>
+              <a class="dropdown-item" href="{{request.route_url('page.view_page', path='group/united-methodist-women')}}">United Methodist Women</a>
+              <a class="dropdown-item" href="{{request.route_url('page.view_page', path='group/main-street-youth')}}">Main Street Youth</a>
+              <a class="dropdown-item" href="{{request.route_url('page.view_page', path='group/the-goodtimers')}}">The Goodtimers</a>
+              <a class="dropdown-item" href="{{request.route_url('page.view_page', path='group/healing-hands-ministry')}}">Healing Hands Ministry</a>
             </div>
           </li>
           <li class="nav-item">
@@ -83,7 +83,6 @@
   </nav>
 
   {% if request.authenticated_userid %}
-
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container">
         <button 

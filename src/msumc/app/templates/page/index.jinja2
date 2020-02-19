@@ -34,7 +34,7 @@
           <td>{{page.updated_by if page.updated_by else ''}}</td>
           <td>{{page.updated_on.strftime('%m/%d/%Y %I:%M %p') if page.updated_on else ''}}</td>
           <td>
-            <a href="{{request.route_url('page.view', path=page.path)}}">
+            <a href="{{request.route_url('page.view', page_id=page.id)}}">
               Edit
             </a>
           </td>

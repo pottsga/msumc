@@ -18,6 +18,12 @@ def includeme(config):
     config.add_route('person.update', '/person/{person_id}/update')
     config.add_route('person.delete', '/person/{person_id}/delete')
 
+    # Upload
+    config.add_route('upload.index', '/upload')
+    config.add_route('upload.add', '/upload/add')
+    config.add_route('upload.view', '/upload/{upload_id}/view')
+    config.add_route('upload.delete', '/upload/{upload_id}/delete')
+
     # Admin
     config.add_route('admin.index', '/admin')
 
@@ -28,6 +34,6 @@ def includeme(config):
     # Page
     config.add_route('page.index', '/page')
     config.add_route('page.add', '/page/add')
-    config.add_route('page.view', '/page/{path}/view')
-    config.add_route('page.update', '/page/{path}/update')
-    config.add_route('page.view_page', '/{path}')
+    config.add_route('page.view', '/page/{page_id}/view')
+    config.add_route('page.update', '/page/{page_id}/update')
+    config.add_route('page.view_page', '/{path:.*}')
