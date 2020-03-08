@@ -3,3 +3,4 @@
 **/*.sqlite
 **/static/img/family**
 **.pyc
+**/*development.ini

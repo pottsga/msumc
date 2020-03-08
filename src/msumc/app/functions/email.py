@@ -11,10 +11,10 @@ def send_email(request, to_email, subject, message):
 
     msg = MIMEMultipart()
     msg['To'] = to_email
-    msg['From'] = FROM_EMAIL
+    msg['From'] = from_email
     msg['Subject'] = subject
     msg.attach(MIMEText(message, 'html'))
 
     s.starttls()
     s.login(from_email, from_passw)
-    s.sendmail(FROM_EMAIL, to_email, msg.as_string())
+    s.sendmail(from_email, to_email, msg.as_string())
