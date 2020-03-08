@@ -8,9 +8,7 @@ from pyramid.view import view_config, view_defaults
 
 from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 
-from msumc.app.models.user import User
-from msumc.app.models.household import Household
-from msumc.app.models.person import Person
+from msumc.app.models import User, Household, Person
 
 @view_defaults(permission='view_directory')
 class PersonViews:
@@ -21,10 +19,13 @@ class PersonViews:
         person_id = request.matchdict.get('person_id', None)
 
         is_active = request.parameters.get('is_active', None)
+        is_admin = request.parameters.get('is_admin', None)
         is_deceased = request.parameters.get('is_deceased', None)
         birthday = request.parameters.get('birthday', None)
 
+
         self.is_active = True if is_active == 'on' else False
+        self.is_admin = True if is_admin == 'on' else False
         self.is_deceased = True if is_deceased == 'on' else False
         self.household_id = int(household_id) if household_id else None
         self.first_name = request.parameters.get('first_name', None)
@@ -38,6 +39,21 @@ class PersonViews:
         self.notes = request.parameters.get('notes', None)
         self.people = request.dbsession.query(Person)\
             .all()
+
+
+
+        # If the email is changed, the email is no longer verified
+        #   and also delete the User record if it exists
+        if self.email != request.parameters.get('email'):
+            self.is_email_verified = False
+
+            user = request.dbsession.query(User)\
+                .filter(User.email == self.email)\
+                .first()
+
+            if user:
+                request.dbsession.delete(user)
+
 
         self.households = request.dbsession.query(Household)\
             .all()
@@ -65,6 +81,13 @@ class PersonViews:
                 self.person = request.dbsession.query(Person)\
                     .filter(Person.id == person_id)\
                     .one()
+
+                if self.person.is_email_verified:
+                    user = request.dbsession.query(User)\
+                        .filter(User.email == self.person.email)\
+                        .first()
+
+                    user.groups = ['group:admins']
 
             except exc.NoResultFound as e:
                 raise HTTPNotFound
@@ -156,6 +179,11 @@ class PersonViews:
         # Delete person
         query = request.dbsession.query(Person)\
             .filter(Person.id == self.person.id)\
+            .delete()
+
+        # Delete the user
+        user = request.dbsession.query(User)\
+            .filter(User.email == self.person.email)\
             .delete()
 
         request.session.flash('INFO: Deleted person')

@@ -20,6 +20,8 @@ class AuthViews:
     def __init__(self, request):
         self.request = request
         self.VERIFICATION_TIMEOUT_HOURS = 2
+        self.min_password_length = 8
+        self.max_password_length = 24
 
     @view_config(route_name='auth.login', renderer='../templates/auth/login.jinja2', request_method="GET")
     def auth_login_GET(self):
@@ -49,8 +51,6 @@ class AuthViews:
 
             headers = remember(request, user.email)
             request.session.flash(f'INFO: Welcome, {user.email}')
-
-            print(user.groups)
 
             if 'group:admins' in user.groups:
                 return HTTPFound(request.route_url('admin.index'), headers=headers)
@@ -137,6 +137,8 @@ class AuthViews:
 
             return {
                 'email_verification': email_verification,        
+                'min_password_length': self.min_password_length,
+                'max_password_length': self.max_password_length,
             }
         except exc.NoResultFound as e:
             request.session.flash('ERROR: Verification time limit timed out. Please try again later.')
@@ -244,6 +246,8 @@ class AuthViews:
 
             return {
                 'email_verification': email_verification,        
+                'min_password_length': self.min_password_length,
+                'max_password_length': self.max_password_length,
             }
         except exc.NoResultFound as e:
             request.session.flash('ERROR: Verification time limit timed out. Please try again later.')

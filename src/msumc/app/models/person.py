@@ -28,6 +28,7 @@ class Person(Base):
 
     is_deceased = Column(Boolean, nullable=False, default=False)
     is_active = Column(Boolean, nullable=False, default=True)
+    is_admin = Column(Boolean, nullable=False, default=False)
 
     is_email_verified = Column(Boolean, nullable=False, default=False)
 

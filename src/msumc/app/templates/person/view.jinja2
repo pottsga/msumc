@@ -56,6 +56,22 @@
 
   <form action="{{request.route_url('person.update', person_id=person.id)}}" method="POST">
     <div class="row">
+      <div class="col-lg-6">
+        <div class="form-group">
+          <div class="custom-control custom-switch">
+            <input type="checkbox" id="is_admin" name="is_admin" class="custom-control-input" {% if person.is_admin %}checked{% endif %} {% if not person.is_email_verified %}disabled{% endif %}>
+            <label class="custom-control-label" for="is_admin">Is Admin?</label>
+          </div>
+          <small class="form-text text-muted">Email must first be verified before user can be made an admin.</small>
+          <small class="form-text text-muted">Users can verify their email by registering on the website.</small>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label for="email_verified">Email Verifiefd?</label>
+          <input type="text" name="email_verified" id="email_verified" class="form-control" readonly value="{{'Yes' if person.is_email_verified else 'No'}}">
+        </div>
+      </div>
       <div class="col-12">
         <div class="form-group">
           <div class="custom-control custom-switch">

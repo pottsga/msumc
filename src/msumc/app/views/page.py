@@ -49,10 +49,10 @@ class PageViews:
     def log_page_visit(self, page):
         page_hit = PageHit(
             page_id=self.page.id,
-            ip_address=request.remote_addr,
+            ip_address=self.request.remote_addr,
         )
 
-        request.dbsession.add(page_hit)
+        self.request.dbsession.add(page_hit)
         logger.info(f'Viewed page /{self.page.path}')
 
     def path_exists_already(self, path):
