@@ -1,4 +1,5 @@
 **/env
+**/*_cache
 **/*.egg*
 **/*.sqlite
 **/static/img/family**
