@@ -23,8 +23,10 @@ class Household(Base):
     state = Column(String(128))
     zipcode = Column(String(128))
     photo_fp = Column(String(1000))
-    # active = Column(Boolean, nullable=False)
 
     notes = Column(String(1000))
     created_on = Column(DateTime, nullable=False)
     created_by = Column(String(128), nullable=False)
+
+    def photo_name(self):
+        return self.photo_fp.split('/')[-1]

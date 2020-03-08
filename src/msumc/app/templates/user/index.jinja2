@@ -1,0 +1,44 @@
+{% extends '../base_admin.jinja2' %}
+
+{% block breadcrumb %}
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active">Users</li>
+    </ol>
+  </nav>
+{% endblock %}
+
+{% block content %}
+  <h1>Users <a class="btn btn-primary" href="{{request.route_url('user.add')}}">Add User</a></h1>
+
+  <table id="user_datatable" class="table table-sm table-bordered">
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Groups</th>
+        <th>Last Signed In On</th>
+        <th>Created By</th>
+        <th>Created On</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+        <tr>
+          <td><code>{{user.email}}</code></td>
+          <td>{{user.first_name}}</td>
+          <td>{{user.last_name}}</td>
+          <td><code>{{user.groups}}</code></td>
+          <td>{{user.last_signed_in_on.strftime('%m/%d/%Y %I:%M:%S %p')}}</td>
+          <td><code>{{user.created_by}}</code></td>
+          <td>{{user.created_on.strftime('%m/%d/%Y %I:%M:%S %p')}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock content %}
+
+{% block scripts %}
+  <script src="{{request.static_url('msumc:app/static/js/user/index.js')}}"></script>
+{% endblock scripts %}

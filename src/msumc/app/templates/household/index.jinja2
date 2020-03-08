@@ -15,6 +15,7 @@
     <thead>
       <tr>
         <th>Last Name</th>
+        <th>Wedding Date</th>
         <th>Photo?</th>
         <th># Household Members</th>
       </tr>   
@@ -26,6 +27,11 @@
             <a href="{{request.route_url('household.view', household_id=household.id)}}">
               {{household.last_name}}
             </a>
+          </td>
+          <td>
+            {% if household.married_on %}
+              {{household.married_on.strftime("%m/%d/%Y")}}
+            {% endif %}
           </td>
           <td>{{'Yes ✓' if household.photo_fp else 'No ✗'}}</td>
           <td>{{household_count.get(household.id, 0)}}</td>

@@ -15,7 +15,7 @@ from msumc.app.models.user import User
 from msumc.app.models.household import Household
 from msumc.app.models.person import Person
 
-@view_defaults(permission='administrate')
+@view_defaults(permission='view_directory')
 class HouseholdViews:
     def __init__(self, request):
         self.request = request
@@ -93,14 +93,14 @@ class HouseholdViews:
         except exc.NoResultFound as e:
             raise HTTPNotFound
 
-    @view_config(route_name='household.add', renderer='../templates/household/add.jinja2')
+    @view_config(route_name='household.add', renderer='../templates/household/add.jinja2', permission='administrate')
     def household_add_GET(self):
         request = self.request
 
         return {
         }
 
-    @view_config(route_name='household.add', request_method="POST")
+    @view_config(route_name='household.add', request_method="POST", permission='administrate')
     def household_add_POST(self):
         request = self.request
 
@@ -124,7 +124,7 @@ class HouseholdViews:
         request.session.flash('INFO: Added household')
         return HTTPFound(request.route_url('household.view', household_id=household.id))
 
-    @view_config(route_name='household.update', request_method="POST")
+    @view_config(route_name='household.update', request_method="POST", permission='administrate')
     def household_update(self):
         request = self.request
 
@@ -146,7 +146,7 @@ class HouseholdViews:
         request.session.flash('INFO: Updated household')
         return HTTPFound(request.route_url('household.view', household_id=self.household.id))
 
-    @view_config(route_name='household.delete')
+    @view_config(route_name='household.delete', permission='administrate')
     def household_delete(self):
         request = self.request
 

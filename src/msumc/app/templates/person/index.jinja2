@@ -14,25 +14,45 @@
   <table class="table table-sm table-bordered" id="person_datatable" style="width: 100%;">
     <thead>
       <tr>
-        <th>ID</th>
+        <th>Household</th>
+        <th>Person ID</th>
         <th>First Name</th>
         <th>Last Name</th>
-      </tr>   
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Active?</th>
+        <th>Deceased?</th>
+      </tr>
     </thead>
     <tbody>
       {% for person in people %}
         <tr>
+          <td>{{households_by_id[person.household_id].last_name}}</td>
           <td>
             <a href="{{request.route_url('person.view', person_id=person.id)}}">
               {{person.id}}
             </a>
           </td>
+          <td>{{person.first_name}}</td>
+          <td>{{person.last_name}}</td>
           <td>
-            {{person.first_name}}
+            {% if person.phone_number %}
+              <a 
+                 href="tel:{{person.phone_number.replace(' ', '').replace(')', '').replace('(', '').replace('-', '')}}">
+                {{person.phone_number}}
+              </a>
+            {% endif %}
           </td>
           <td>
-            {{person.last_name}}
+            {% if person.email %}
+              <a 
+                 href="mailto:{{person.email}}">
+                {{person.email}}
+              </a>
+            {% endif %}
           </td>
+          <td>{{'Yes ✓' if person.is_active else 'No ✗'}}</td>
+          <td>{{'Yes ✓' if person.is_deceased else 'No ✗'}}</td>
         </tr>
       {% endfor %}
     </tbody>

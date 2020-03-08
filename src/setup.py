@@ -12,6 +12,12 @@ requires = [
     'sqlalchemy',
     'zope.sqlalchemy',
     'bcrypt',
+    'weasyprint',
+]
+
+test_requires = [
+    'selenium',
+    'pytest',
 ]
 
 dev_requires = [
@@ -23,6 +29,7 @@ setup(
     install_requires=requires,
     extras_require={
         'dev': dev_requires,
+        'test': test_requires,
     },
     entry_points={
         'paste.app_factory': [

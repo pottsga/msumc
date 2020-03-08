@@ -3,6 +3,18 @@
     <a class="navbar-brand" href="{{request.route_url('index.index')}}">
       <img src="{{request.static_url('msumc:app/static/img/Logo.png')}}" alt="MSUMC">
     </a>
+
+    {% if layout == 'base_admin' %}
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <span class="navbar-text" id="username">{{request.authenticated_userid}}</span>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{request.route_url('auth.logout')}}">Logout</a>
+        </li>
+      </ul>
+
+    {% endif %}
   </div>
 </nav>
 
@@ -76,6 +88,9 @@
             <li class="nav-item">
               <a class="nav-link" href="{{request.route_url('auth.login')}}">Login</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{request.route_url('auth.register')}}">Register</a>
+            </li>
           {% endif %}
         </ul>
       </div>
@@ -98,14 +113,11 @@
 
         <div class="collapse navbar-collapse" id="admin_links">
           <ul class="navbar-nav mx-auto">
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="aboutUsDropdown" role="button" data-toggle="dropdown">
-                Admin
-              </a>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="{{request.route_url('admin.index')}}">Admin Site</a>
-              </div>
+            {% if 'group:admins' in request.effective_principals %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{request.route_url('admin.index')}}">Admin Dashboard</a>
             </li>
+            {% endif %}
             <li class="nav-item">
               <span class="navbar-text" id="username">{{request.authenticated_userid}}</span>
             </li>

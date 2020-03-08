@@ -6,12 +6,15 @@
 
   <form action="{{request.route_url('auth.login')}}" method="POST">
     <div class="form-group">
-      <label for="username">Username</label>
-      <input type="text" id="username" name="username" class="form-control" required>
+      <label for="email">Email</label>
+      <input type="text" id="email" name="email" class="form-control" required>
     </div>
     <div class="form-group">
       <label for="password">Password</label>
       <input type="password" id="password" name="password" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <a href="{{request.route_url('auth.forgot_password')}}">Forgot password</a>
     </div>
     <div class="form-group text-right">
       <button type="submit" class="btn btn-primary">Login</button>

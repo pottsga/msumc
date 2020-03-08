@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+    code {
+      font-size: 8px;
+    }
+    body {
+      font-size: 12px;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    @page {
+      size: letter;
+    }
+
+    @media print {
+      .page {
+        page-break-after: always;
+      }
+    }
+
+    .last-name {
+      font-weight: 700;
+    }
+
+    td.dots {
+      overflow: hidden;
+      width: 50%;
+    }
+  </style>
+</head>
+<body>
+  <div class="page text-center">
+    <h1>Main Street United Methodist Church Directory</h1>
+    <img src="{{request.static_url('msumc:app/static/img/Church.jpeg')}}" style="width: 100%; margin: 50px 0; border-radius: 4px;" alt="">
+  </div>
+  <div class="page">
+    <h1>Directory</h1>
+
+    <table style="width: 100%;">
+      {% for person in people %}
+
+        {% set household = households_by_id[person.id] if person.id in households_by_id.keys() else None %}
+        <tr>
+          <td>
+            <span class="last-name">{{person.last_name}}</span>
+            <span>{{person.first_name}}</span>
+            {% if household %}
+              {% set street1 = household.street1|upper if household.street1 else '' %}
+              {% set street2 = household.street2|upper if household.street2 else '' %}
+              {% set city = household.city|upper if household.city else '' %}
+              {% set state = household.state|upper if household.state else '' %}
+              {% set zipcode = household.zipcode|upper if household.zipcode else '' %}
+              <br>
+              <code>
+                {{street1}} {{street2}} {{city}} {{state}} {{zipcode}} 
+              </code>
+            {% endif %}
+          </td>
+          <td class="dots">
+            <span> . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . </span>
+          </td>
+          <td>
+            <code>{{person.phone_number}}</code>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
+</body>
+</html>

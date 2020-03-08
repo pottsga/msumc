@@ -1,0 +1,18 @@
+{% extends '../base.jinja2' %}
+
+{% block content %}
+
+  <h1>Register</h1>
+  <p>In order to register, you must first have an email on file.</p>
+
+  <form action="{{request.route_url('auth.register')}}" method="POST">
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="text" id="email" name="email" class="form-control" required>
+    </div>
+    <div class="form-group text-right">
+      <button type="submit" class="btn btn-primary">Register</button>
+    </div>
+  </form>
+
+{% endblock content %}

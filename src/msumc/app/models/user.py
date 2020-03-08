@@ -16,13 +16,14 @@ from msumc.app.models.meta import Base
 class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
-    username = Column(String(120), unique=True)
+    email = Column(String(120), unique=True)
     password = Column(String(120), nullable=False)
     first_name = Column(String(120), nullable=False)
     last_name = Column(String(120), nullable=False)
     groups = Column(ArrayType, nullable=False)
     created_on = Column(DateTime, nullable=False)
-    last_signed_in_on = Column(DateTime, nullable=False)
+    created_by = Column(String(120), nullable=False)
+    last_signed_in_on = Column(DateTime)
  
 def user_factory(request):
     user_id = request.matchdict.get('id')

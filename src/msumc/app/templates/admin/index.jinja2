@@ -10,4 +10,60 @@
 
 {% block content %}
   <h1>Admin Dashboard</h1>
+
+  
+  <table class="table table-sm table-bordered">
+    <thead>
+      <tr class="thead-dark">
+        <th colspan="3" class="text-center">Page Hits</th>
+      </tr>
+      <tr>
+        <th>Page Title</th>
+        <th>Page Path</th>
+        <th># Hits</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for page, page_hit in page_hits %}
+      <tr>
+        <td>{{page.title}}</td>
+        <td><code>/{{page.path}}</code></td>
+        <td>{{page_hit}}</td>
+      </tr>
+      {% endfor %}
+      {% if page_hits | length == 0 %}
+      <tr>
+        <td colspan="3" class="text-center">None</td>
+      </tr>
+      {% endif %}
+    </tbody>
+  </table>
+
+  <table class="table table-sm table-bordered">
+    <thead>
+      <tr class="thead-dark">
+        <th colspan="3" class="text-center">Verified Users</th>
+      </tr>
+      <tr>
+        <th>Email</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for person in verified_people %}
+      <tr>
+        <td>{{person.email}}</td>
+        <td>{{person.first_name}}</td>
+        <td>{{person.last_name}}</td>
+      </tr>
+      {% endfor %}
+      {% if verified_people | length == 0 %}
+      <tr>
+        <td colspan="3" class="text-center">None</td>
+      </tr>
+      {% endif %}
+    </tbody>
+  </table>
+
 {% endblock content %}

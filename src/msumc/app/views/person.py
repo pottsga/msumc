@@ -12,7 +12,7 @@ from msumc.app.models.user import User
 from msumc.app.models.household import Household
 from msumc.app.models.person import Person
 
-@view_defaults(permission='administrate')
+@view_defaults(permission='view_directory')
 class PersonViews:
     def __init__(self, request):
         self.request = request
@@ -41,6 +41,14 @@ class PersonViews:
 
         self.households = request.dbsession.query(Household)\
             .all()
+
+        self.people = request.dbsession.query(Person)\
+            .all()
+
+        self.households_by_id = {
+            household.id: household
+            for household in self.households
+        }
 
         self.household = None
         if household_id:
@@ -74,9 +82,20 @@ class PersonViews:
 
         return {
             'people': self.people,
+            'households_by_id': self.households_by_id,
         }
 
-    @view_config(route_name='person.add', renderer='../templates/person/add.jinja2', request_method='GET')
+    @view_config(route_name='person.view', renderer='../templates/person/view.jinja2')
+    def person_view(self):
+        request = self.request
+
+        return {
+            'person': self.person,
+            'household': self.household,
+            'households': self.households,
+        }
+
+    @view_config(route_name='person.add', renderer='../templates/person/add.jinja2', request_method='GET', permission='administrate')
     def person_add_GET(self):
         request = self.request
 
@@ -86,7 +105,7 @@ class PersonViews:
             'household': self.household,
         }
 
-    @view_config(route_name='person.add', request_method='POST')
+    @view_config(route_name='person.add', request_method='POST', permission='administrate')
     def person_add_POST(self):
         request = self.request
 
@@ -111,17 +130,7 @@ class PersonViews:
         request.session.flash('INFO: Added person')
         return HTTPFound(request.route_url('household.view', household_id=person.household_id))
 
-    @view_config(route_name='person.view', renderer='../templates/person/view.jinja2')
-    def person_view(self):
-        request = self.request
-
-        return {
-            'person': self.person,
-            'household': self.household,
-            'households': self.households,
-        }
-
-    @view_config(route_name='person.update', request_method='POST')
+    @view_config(route_name='person.update', request_method='POST', permission='administrate')
     def person_update_POST(self):
         request = self.request
 
@@ -140,7 +149,7 @@ class PersonViews:
         request.session.flash('INFO: Updated person')
         return HTTPFound(request.route_url('person.view', person_id=self.person.id))
 
-    @view_config(route_name='person.delete')
+    @view_config(route_name='person.delete', permission='administrate')
     def person_delete(self):
         request = self.request
 

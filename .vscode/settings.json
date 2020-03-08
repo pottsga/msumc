@@ -1,0 +1,5 @@
+{
+    "python.pythonPath": "/Users/pottsga/dev/msumc/src/env/bin/python3",
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true
+}

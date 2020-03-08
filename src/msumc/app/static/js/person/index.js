@@ -12,5 +12,10 @@ $('#person_datatable').DataTable({
     [25, 50, 75, -1],
     ['25 rows', '50 rows', '75 rows', 'Show all'],
   ],
+  order: [
+    [2, 'asc'],
+    [1, 'asc'],
+  ],
+  rowsGroup: [0],
   responsive: true,
 });

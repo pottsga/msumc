@@ -1,13 +1,17 @@
 {% if layout == 'base_admin' %}
 <nav class="nav flex-column nav-pills" id="sidebar">
   <p class="pt-2 text-muted">Directory</p>
-  <a data-subject="admin" class="nav-link" href="{{request.route_url('admin.index')}}">Admin</a>
   <a data-subject="household" class="nav-link" href="{{request.route_url('household.index')}}">Households</a>
   <a data-subject="person" class="nav-link" href="{{request.route_url('person.index')}}">People</a>
+  <a data-subject="directory" class="nav-link" href="{{request.route_url('directory.index')}}">Directory</a>
   <p class="pt-2 text-muted">Other Links</p>
-  <a class="nav-link" href="{{request.route_url('index.index')}}">Main Site</a>
-  <a data-subject="upload" class="nav-link" href="{{request.route_url('upload.index')}}">Uploads</a>
-  <a data-subject="page" class="nav-link" href="{{request.route_url('page.index')}}">Pages</a>
+  {% if 'group:admins' in request.effective_principals %}
+    <a data-subject="admin" class="nav-link" href="{{request.route_url('admin.index')}}">Admin</a>
+    <a data-subject="user" class="nav-link" href="{{request.route_url('user.index')}}">Users</a>
+    <a data-subject="upload" class="nav-link" href="{{request.route_url('upload.index')}}">Uploads</a>
+    <a data-subject="page" class="nav-link" href="{{request.route_url('page.index')}}">Pages</a>
+  {% endif %}
+  <a class="nav-link" href="{{request.route_url('index.index')}}">Back to Church Website</a>
 </nav>
 {% elif layout == 'base' %}
 <div class="text-center">

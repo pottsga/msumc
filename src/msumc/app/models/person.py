@@ -27,7 +27,9 @@ class Person(Base):
     familial_relationship = Column(String(128)) # ex. Wife, Husband, Daughter, Son, etc.
 
     is_deceased = Column(Boolean, nullable=False, default=False)
-    is_active = Column(Boolean, nullable=False)
+    is_active = Column(Boolean, nullable=False, default=True)
+
+    is_email_verified = Column(Boolean, nullable=False, default=False)
 
     notes = Column(String(1000))
     created_on = Column(DateTime, nullable=False)

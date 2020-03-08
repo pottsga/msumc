@@ -67,7 +67,7 @@ function addPhoneNumberValidation() {
 }
 
 addRequiredClassToLabels();
-addPhoneNumberValidation();
+// addPhoneNumberValidation();
 addActiveClassToSelector('#sidebar .nav-link');
 addActiveClassToSelector('.navbar-nav .nav-link');
 

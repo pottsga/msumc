@@ -24,12 +24,26 @@ def includeme(config):
     config.add_route('upload.view', '/upload/{upload_id}/view')
     config.add_route('upload.delete', '/upload/{upload_id}/delete')
 
+    # Directory
+    config.add_route('directory.index', '/directory')
+    config.add_route('directory.pdf', '/directory.pdf')
+
     # Admin
     config.add_route('admin.index', '/admin')
+
+    # User
+    config.add_route('user.index', '/user')
+    config.add_route('user.add', '/user/add')
+    config.add_route('user.view', '/user/{user_id}/view')
+    config.add_route('user.delete', '/user/{user_id}/delete')
 
     # Auth
     config.add_route('auth.login', '/auth/login')
     config.add_route('auth.logout', '/auth/logout')
+    config.add_route('auth.register', '/auth/register')
+    config.add_route('auth.verify', '/auth/verify/{verification_id}')
+    config.add_route('auth.forgot_password', '/auth/forgot_password')
+    config.add_route('auth.reset_password', '/auth/{verification_id}/reset_password')
 
     # Page
     config.add_route('page.index', '/page')

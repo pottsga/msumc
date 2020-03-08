@@ -8,13 +8,13 @@ from sqlalchemy import or_
 from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 from pyramid.view import view_config, view_defaults
 
-from msumc.app.models.user import User
-from msumc.app.models.page import Page
+from ..models import User, Page, PageHit
 
 class PageViews:
 
     def __init__(self, request):
         self.request = request
+
 
         self.path = request.params.get('path', None)
 
@@ -39,8 +39,14 @@ class PageViews:
                         )
                     )\
                     .one()
+
+
+                self.log_page_visit(page)
             except exc.NoResultFound as e:
                 raise HTTPNotFound
+
+    def log_page_visit(self, page):
+        logger.info(f'Viewed page /{self.page.path}')
 
     def path_exists_already(self, path):
         path_exists = self.request.dbsession.query(Page)\
@@ -52,6 +58,13 @@ class PageViews:
     @view_config(route_name='page.view_page', renderer='../templates/page/view_page.jinja2')
     def page_view_page(self):
         request = self.request
+
+        page_hit = PageHit(
+            page_id=self.page.id,
+            ip_address=request.remote_addr,
+        )
+
+        request.dbsession.add(page_hit)
 
         return {
             'page': self.page,

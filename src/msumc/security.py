@@ -11,11 +11,11 @@ def check_password(pw, hashed_pw):
     matches = bcrypt.checkpw(pw.encode('utf8'), hashed_pw.encode('utf8'))
     return matches
 
-def groupfinder(username, request):
+def groupfinder(email, request):
     groups = []
     try:
         user = request.dbsession.query(User)\
-            .filter(User.username == username)\
+            .filter(User.email == email)\
             .one()
     except NoResultFound:
         pass

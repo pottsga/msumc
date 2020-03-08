@@ -18,9 +18,7 @@ from msumc.app.models import (
     get_tm_session
 )
 
-from msumc.app.models.meta import Base
-from msumc.app.models.user import User
-from msumc.app.models.page import Page
+from msumc.app.models import Base, User, Page, Household, Person
 
 from msumc.initial_html import pages
 
@@ -50,14 +48,38 @@ def main(argv=sys.argv):
         dbsession = get_tm_session(session_factory, transaction.manager)
 
         u = User(
-            username='pottsga',
+            email='pottsga@gmail.com',
             password=hash_password('asdf'),
             first_name='Greg',
             last_name='Potts',
             groups=['group:admins'],
             created_on=datetime.datetime.now(),
+            created_by='SYSTEM',
             last_signed_in_on=datetime.datetime.now(),
         )
         dbsession.add(u)
+
+        h = Household(
+            last_name='Potts',
+            married_on=datetime.date(year=2019, month=10, day=5),
+            street1='720 Laurel Ave. E.',
+            city='Greenwood',
+            state='SC',
+            zipcode='29649',
+            created_on=datetime.datetime.now(),
+            created_by='SYSTEM',
+        )
+        dbsession.add(h)
+        dbsession.flush()
+
+        p = Person(
+            household_id=h.id,
+            first_name='Greg',
+            last_name='Potts',
+            email='potts.ga@gmail.com',
+            created_on=datetime.datetime.now(),
+            created_by='SYSTEM',
+        )
+        dbsession.add(p)
 
         dbsession.add_all(pages)
