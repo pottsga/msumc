@@ -106,7 +106,7 @@ class AuthViews:
             <p>This code expires in <code>{self.VERIFICATION_TIMEOUT_HOURS} hours</code>.</p>
             '''
 
-            functions.email.send_email(email, 'Verification', message)
+            functions.email.send_email(request, email, 'Verification', message)
 
             email_verification = EmailVerification(
                 person_id=person.id,
@@ -215,7 +215,7 @@ class AuthViews:
             <p>This code expires in <code>{self.VERIFICATION_TIMEOUT_HOURS} hours</code>.</p>
             '''
 
-            functions.email.send_email(email, 'Reset Password', message)
+            functions.email.send_email(request, email, 'Reset Password', message)
 
             email_verification = EmailVerification(
                 person_id=person.id,
