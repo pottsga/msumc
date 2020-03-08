@@ -41,11 +41,18 @@ class PageViews:
                     .one()
 
 
-                self.log_page_visit(page)
+                if path:
+                    self.log_page_visit(page)
             except exc.NoResultFound as e:
                 raise HTTPNotFound
 
     def log_page_visit(self, page):
+        page_hit = PageHit(
+            page_id=self.page.id,
+            ip_address=request.remote_addr,
+        )
+
+        request.dbsession.add(page_hit)
         logger.info(f'Viewed page /{self.page.path}')
 
     def path_exists_already(self, path):
@@ -59,12 +66,6 @@ class PageViews:
     def page_view_page(self):
         request = self.request
 
-        page_hit = PageHit(
-            page_id=self.page.id,
-            ip_address=request.remote_addr,
-        )
-
-        request.dbsession.add(page_hit)
 
         return {
             'page': self.page,
@@ -129,3 +130,13 @@ class PageViews:
 
         request.session.flash(f'INFO: Updated page {self.page.path}')
         return HTTPFound(request.route_url('page.view', page_id=self.page.id))
+
+    @view_config(route_name='page.delete', permission='administrate')
+    def page_delete(self):
+        request = self.request
+
+        request.dbsession.delete(self.page)
+        request.dbsession.flush()
+
+        request.session.flash(f'INFO: Deleted page')
+        return HTTPFound(request.route_url('page.index'))

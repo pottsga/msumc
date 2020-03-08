@@ -22,6 +22,7 @@
         <th>Updated On</th>
         <th></th>
         <th></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -36,6 +37,11 @@
           <td>
             <a href="{{request.route_url('page.view', page_id=page.id)}}">
               Edit
+            </a>
+          </td>
+          <td>
+            <a href="{{request.route_url('page.delete', page_id=page.id)}}" onclick="return confirm('Are you sure?');">
+              Delete
             </a>
           </td>
           <td>

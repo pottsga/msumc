@@ -50,4 +50,5 @@ def includeme(config):
     config.add_route('page.add', '/page/add')
     config.add_route('page.view', '/page/{page_id}/view')
     config.add_route('page.update', '/page/{page_id}/update')
+    config.add_route('page.delete', '/page/{page_id}/delete')
     config.add_route('page.view_page', '/{path:.*}')
