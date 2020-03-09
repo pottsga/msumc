@@ -9,6 +9,7 @@ from sqlalchemy import (
     Boolean,
     ForeignKey,
     Enum,
+    Text,
 )
  
 from msumc.app.models.meta import Base
@@ -19,7 +20,7 @@ class Page(Base):
 
     path = Column(String(128), nullable=False, unique=True)
     title = Column(String(128), nullable=False)
-    body = Column(String(1000000), nullable=False)
+    body = Column(Text(1000000), nullable=False)
 
     updated_on = Column(DateTime)
     updated_by = Column(String(128))
