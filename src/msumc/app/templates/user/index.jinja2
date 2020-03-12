@@ -30,7 +30,7 @@
           <td>{{user.first_name}}</td>
           <td>{{user.last_name}}</td>
           <td><code>{{user.groups}}</code></td>
-          <td>{{user.last_signed_in_on.strftime('%m/%d/%Y %I:%M:%S %p')}}</td>
+          <td>{{user.last_signed_in_on.strftime('%m/%d/%Y %I:%M:%S %p') if user.last_signed_in_on else ''}}</td>
           <td><code>{{user.created_by}}</code></td>
           <td>{{user.created_on.strftime('%m/%d/%Y %I:%M:%S %p')}}</td>
         </tr>
