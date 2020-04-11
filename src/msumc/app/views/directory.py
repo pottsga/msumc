@@ -64,6 +64,7 @@ class DirectoryViews:
         template = template_env.get_template(TEMPLATE_FILE)
 
         html = template.render({
+            'now': datetime.datetime.now(),
             'request': request,
             'people': people,
             'households_by_id': households_by_id,

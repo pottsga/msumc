@@ -9,8 +9,8 @@
     }
     body {
       font-size: 12px;
+      font-family: 'Open Sans', sans-serif;
     }
-
     .text-center {
       text-align: center;
     }
@@ -36,40 +36,54 @@
   </style>
 </head>
 <body>
-  <div class="page text-center">
-    <h1>Main Street United Methodist Church Directory</h1>
-    <img src="{{request.static_url('msumc:app/static/img/Church.jpeg')}}" style="width: 100%; margin: 50px 0; border-radius: 4px;" alt="">
+  <div class="page">
+    <div class="text-center">
+      <h1>Main Street United Methodist Church Directory</h1>
+      <p>(864) 366-2367</p>
+      <p>300 N. Main St., Abbeville, SC 29620</p>
+      <p>mainstreetumcabbeville@gmail.com</p>
+      <img src="{{request.static_url('msumc:app/static/img/Church.jpeg')}}" style="width: 100%; margin: 50px 0; border-radius: 4px;" alt="">
+    </div>
+    <code>Generated on {{now.strftime('%m/%d/%Y %I:%M:%S %p')}}</code>
   </div>
   <div class="page">
     <h1>Directory</h1>
 
-    <table style="width: 100%;">
-      {% for person in people %}
+    <table style="width: 100%">
+      {% for letter in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' %}
+        {% for person in people if person.last_name[0].upper() == letter %}
+          {% set household = households_by_id[person.id] if person.id in households_by_id.keys() else None %}
 
-        {% set household = households_by_id[person.id] if person.id in households_by_id.keys() else None %}
-        <tr>
-          <td>
-            <span class="last-name">{{person.last_name}}</span>
-            <span>{{person.first_name}}</span>
-            {% if household %}
-              {% set street1 = household.street1|upper if household.street1 else '' %}
-              {% set street2 = household.street2|upper if household.street2 else '' %}
-              {% set city = household.city|upper if household.city else '' %}
-              {% set state = household.state|upper if household.state else '' %}
-              {% set zipcode = household.zipcode|upper if household.zipcode else '' %}
-              <br>
+          {% set street1 = household.street1|upper if household.street1 else '' %}
+          {% set street2 = household.street2|upper if household.street2 else '' %}
+          {% set city = household.city|upper if household.city else '' %}
+          {% set state = household.state|upper if household.state else '' %}
+          {% set zipcode = household.zipcode|upper if household.zipcode else '' %}
+          
+          {% if loop.index == 1 %}
+            <tr>
+              <td colspan="4"><strong>{{letter}}</strong></td>
+            </tr>
+          {% endif %}
+          <tr>
+            <td>{{person.last_name}}, {{person.first_name}}</td>
+            <td>
+              <code>
+                {{person.email if person.email else ''}}
+              </code>
+            </td>
+            <td>
               <code>
                 {{street1}} {{street2}} {{city}} {{state}} {{zipcode}} 
               </code>
-            {% endif %}
-          </td>
-          <td class="dots">
-            <span> . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . </span>
-          </td>
-          <td>
-            <code>{{person.phone_number}}</code>
-          </td>
-        </tr>
+            </td>
+            <td>
+              <code>
+                {{person.phone_number if person.phone_number else ''}}
+              </code>
+            </td>
+          </tr>
+        {% endfor %}
       {% endfor %}
     </table>
   </div>
