@@ -1,0 +1,19 @@
+{% extends '../base_admin.jinja2' %}
+
+{% block breadcrumb %}
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active">Directory</li>
+    </ol>
+  </nav>
+{% endblock %}
+
+{% block content %}
+  <h1>Email</h1>
+  <p>Copy the emails below into your email client to send an email to all <code>active</code> members.</p>
+  <p>To limit the amount of recipients showing up in the <code>To</code> section when you send out your email, paste these emails into the <code>BCC</code> line in your email client to do a blind carbon copy.</p>
+  <div class="card p-3">
+    <code>{{emails|join(';')}}</code>  
+  </div>
+
+{% endblock content %}

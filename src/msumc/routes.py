@@ -18,6 +18,9 @@ def includeme(config):
     config.add_route('person.update', '/person/{person_id}/update')
     config.add_route('person.delete', '/person/{person_id}/delete')
 
+    # Email
+    config.add_route('email.index', '/email')
+
     # Upload
     config.add_route('upload.index', '/upload')
     config.add_route('upload.add', '/upload/add')

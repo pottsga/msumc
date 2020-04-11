@@ -4,6 +4,7 @@
   <a data-subject="household" class="nav-link" href="{{request.route_url('household.index')}}">Households</a>
   <a data-subject="person" class="nav-link" href="{{request.route_url('person.index')}}">People</a>
   <a data-subject="directory" class="nav-link" href="{{request.route_url('directory.index')}}">Directory</a>
+  <a data-subject="email" class="nav-link" href="{{request.route_url('email.index')}}">Email Export</a>
   <p class="pt-2 text-muted">Other Links</p>
   {% if 'group:admins' in request.effective_principals %}
     <a data-subject="admin" class="nav-link" href="{{request.route_url('admin.index')}}">Admin</a>
