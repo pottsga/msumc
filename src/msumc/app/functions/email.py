@@ -15,6 +15,8 @@ def send_email(request, to_email, subject, message):
     msg['Subject'] = subject
     msg.attach(MIMEText(message, 'html'))
 
+    s.ehlo()
     s.starttls()
     s.login(from_email, from_passw)
     s.sendmail(from_email, to_email, msg.as_string())
+    s.close()
