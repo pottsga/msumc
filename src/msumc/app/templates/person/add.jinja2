@@ -31,17 +31,29 @@
         </div>
       </div>
       <div class="col-lg-6">
+        <p>{{households_by_name}} HOUSEHOLDS</p>
         <div class="form-group">
           <label for="household_id">Household</label>
           <select id="household_id" name="household_id" class="form-control" required>
             <option value=""></option>
+            {#
             {% for household in households %}
               <option value="{{household.id}}"
                 {% if household.id == household_id|int %}selected{% endif %}>
                 {{household.last_name}}
               </option>
             {% endfor %}
+            #}
+            {% for household in households_and_people %}
+              {% set people = households_and_people[household][0:2] %}
+
+              <option value="{{household.id}}"
+                {% if household.id == household_id|int %}selected{% endif %}>
+              {{household.last_name}} {% if people|length > 0 %}({{people|join(', ')}}){% endif %}
+              </option>
+            {% endfor %}
           </select>
+          <small class="form-text text-muted">If there are people already added to the household, the first 3 will show up next to the household name.</small>
         </div>
       </div>
       <div class="col-lg-6"></div>

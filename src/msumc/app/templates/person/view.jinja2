@@ -23,11 +23,13 @@
          href="{{request.route_url('household.view', household_id=household.id)}}">
         View Household
       </a>
+      {% if 'group:admins' in request.effective_principals %}
       <a class="btn btn-danger" 
          href="{{request.route_url('person.delete', person_id=person.id)}}" 
          onclick="return confirm('Are you sure you want to delete this person?');">
         Delete Person
       </a>
+      {% endif %}
     </span>
   </h1>
 
@@ -55,23 +57,25 @@
   </div>
 
   <form action="{{request.route_url('person.update', person_id=person.id)}}" method="POST">
-    <div class="row">
-      <div class="col-lg-6">
-        <div class="form-group">
-          <div class="custom-control custom-switch">
-            <input type="checkbox" id="is_admin" name="is_admin" class="custom-control-input" {% if person.is_admin %}checked{% endif %} {% if not person.is_email_verified %}disabled{% endif %}>
-            <label class="custom-control-label" for="is_admin">Is Admin?</label>
+    <fieldset class="row" {% if 'group:admins' not in request.effective_principals %}disabled{% endif %}>
+      {% if 'group:admins' in request.effective_principals %}
+        <div class="col-lg-6">
+          <div class="form-group">
+            <div class="custom-control custom-switch">
+              <input type="checkbox" id="is_admin" name="is_admin" class="custom-control-input" {% if person.is_admin %}checked{% endif %} {% if not person.is_email_verified %}disabled{% endif %}>
+              <label class="custom-control-label" for="is_admin">Is Admin?</label>
+            </div>
+            <small class="form-text text-muted">Email must first be verified before user can be made an admin.</small>
+            <small class="form-text text-muted">Users can verify their email by registering on the website.</small>
           </div>
-          <small class="form-text text-muted">Email must first be verified before user can be made an admin.</small>
-          <small class="form-text text-muted">Users can verify their email by registering on the website.</small>
         </div>
-      </div>
-      <div class="col-lg-6">
-        <div class="form-group">
-          <label for="email_verified">Email Verifiefd?</label>
-          <input type="text" name="email_verified" id="email_verified" class="form-control" readonly value="{{'Yes' if person.is_email_verified else 'No'}}">
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label for="email_verified">Email Verified?</label>
+            <input type="text" name="email_verified" id="email_verified" class="form-control" readonly value="{{'Yes' if person.is_email_verified else 'No'}}">
+          </div>
         </div>
-      </div>
+      {% endif %}
       <div class="col-12">
         <div class="form-group">
           <div class="custom-control custom-switch">
@@ -95,8 +99,8 @@
             <option value=""></option>
             {% for household in households %}
               <option value="{{household.id}}"
-                {% if household.id == person.household_id %}selected{% endif %}>
-                {{household.last_name}}
+                      {% if household.id == person.household_id %}selected{% endif %}>
+              {{household.last_name}}
               </option>
             {% endfor %}
           </select>
@@ -136,7 +140,7 @@
         <div class="form-group">
           <label for="birthday">Birthday</label>
           <input type="text" id="birthday" name="birthday" class="form-control datepicker" 
-            pattern="\d{2}/\d{2}/\d{4}" value="{% if person.birthday %}{{person.birthday.strftime('%m/%d/%Y')}}{% endif %}">
+                                                           pattern="\d{2}/\d{2}/\d{4}" value="{% if person.birthday %}{{person.birthday.strftime('%m/%d/%Y')}}{% endif %}">
           <small class="form-text text-muted">Must be of format 00/00/0000</small>
         </div>
       </div>
@@ -159,9 +163,12 @@
           <textarea id="notes" name="notes" rows="5" class="form-control">{{person.notes or ''}}</textarea>
         </div>
       </div>
+      {% if 'group:admins' in request.effective_principals %}
       <div class="col-12 text-right">
         <button type="submit" class="btn btn-warning">Update</button>
       </div>
+      {% endif %}
+    </fieldset>
     </div>
   </form>
 {% endblock content %}

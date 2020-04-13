@@ -48,7 +48,7 @@ def main(argv=sys.argv):
         dbsession = get_tm_session(session_factory, transaction.manager)
 
         u = User(
-            email='pottsga@gmail.com',
+            email='potts.ga@gmail.com',
             password=hash_password('asdf'),
             first_name='Greg',
             last_name='Potts',
@@ -77,6 +77,8 @@ def main(argv=sys.argv):
             first_name='Greg',
             last_name='Potts',
             email='potts.ga@gmail.com',
+            is_admin=True,
+            is_email_verified=True,
             created_on=datetime.datetime.now(),
             created_by='SYSTEM',
         )

@@ -27,6 +27,7 @@ class DirectoryViews:
         people = request.dbsession.query(Person)\
             .filter(
                 Person.is_active == True,
+                Person.is_deceased == False,
                 Person.email != None
             )\
             .order_by(Person.email)\

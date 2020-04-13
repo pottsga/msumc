@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-  <h1>Person <a class="btn btn-primary" href="{{request.route_url('person.add')}}">Add Person</a></h1>
+  <h1>Person {% if 'group:admins' in request.effective_principals %}<a class="btn btn-primary" href="{{request.route_url('person.add')}}">Add Person</a>{% endif %}</h1>
 
   <table class="table table-sm table-bordered" id="person_datatable" style="width: 100%;">
     <thead>

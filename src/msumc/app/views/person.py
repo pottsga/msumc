@@ -40,8 +40,6 @@ class PersonViews:
         self.people = request.dbsession.query(Person)\
             .all()
 
-
-
         # If the email is changed, the email is no longer verified
         #   and also delete the User record if it exists
         if self.email != request.parameters.get('email'):
@@ -54,6 +52,14 @@ class PersonViews:
             if user:
                 request.dbsession.delete(user)
 
+        # Un-admin the user when the 'is_admin' flag is set to false
+        if self.is_admin == False:
+            user = request.dbsession.query(User)\
+                .filter(User.email == self.email)\
+                .first()
+
+            if user:
+                user.groups = ['group:members']
 
         self.households = request.dbsession.query(Household)\
             .order_by(Household.last_name)\
@@ -66,6 +72,13 @@ class PersonViews:
             household.id: household
             for household in self.households
         }
+
+        self.households_and_people = {
+            household: [ person.first_name for person in self.people if person.household_id == household.id ]
+            for household in self.households
+        }
+
+        print(self.households_and_people)
 
         self.household = None
         if household_id:
@@ -88,7 +101,7 @@ class PersonViews:
                         .filter(User.email == self.person.email)\
                         .first()
 
-                    user.groups = ['group:admins']
+                    # user.groups = ['group:admins']
 
             except exc.NoResultFound as e:
                 raise HTTPNotFound
@@ -124,6 +137,7 @@ class PersonViews:
         request = self.request
 
         return {
+            'households_and_people': self.households_and_people,
             'household_id': self.household_id,
             'households': self.households,
             'household': self.household,
@@ -132,6 +146,13 @@ class PersonViews:
     @view_config(route_name='person.add', request_method='POST', permission='administrate')
     def person_add_POST(self):
         request = self.request
+
+        # Check if email already in use by another account
+        email_exists = True if len(request.dbsession.query(Person).filter(Person.email == self.email).all()) > 0 else False
+
+        if email_exists:
+            request.session.flash('ERROR: Email already is in use by another account, please use a unique email.')
+            return HTTPFound(request.route_url('person.add'))
 
         person = Person(
             is_active=self.is_active,
@@ -169,6 +190,7 @@ class PersonViews:
         self.person.email = self.email
         self.person.notes = self.notes
         self.person.birthday = self.birthday
+        self.person.is_admin = self.is_admin
 
         request.session.flash('INFO: Updated person')
         return HTTPFound(request.route_url('person.view', person_id=self.person.id))
