@@ -56,7 +56,7 @@ class PersonViews:
 
 
         self.households = request.dbsession.query(Household)\
-            .filter(Household.last_name)\
+            .order_by(Household.last_name)\
             .all()
 
         self.people = request.dbsession.query(Person)\
