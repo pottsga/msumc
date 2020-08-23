@@ -4,6 +4,8 @@ logger = logging.getLogger(__name__)
 from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPFound
 
+from ..functions.email import send_email
+
 from msumc.app.models.user import User
 
 class IndexViews:
@@ -14,4 +16,9 @@ class IndexViews:
     @view_config(route_name='index.index')
     def index_index(self):
         request = self.request
+
+        result = send_email(request, 'pottsga@gmail.com', 'Testing', 'Test 1 2 3\nFrom MSUMC') 
+
+        print(result)
+
         return HTTPFound(request.route_url('page.view_page', path='index'))
