@@ -17,8 +17,4 @@ class IndexViews:
     def index_index(self):
         request = self.request
 
-        result = send_email(request, 'pottsga@gmail.com', 'Testing', 'Test 1 2 3\nFrom MSUMC') 
-
-        print(result)
-
         return HTTPFound(request.route_url('page.view_page', path='index'))
