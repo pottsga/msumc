@@ -199,15 +199,23 @@ class PersonViews:
     def person_delete(self):
         request = self.request
 
-        # Delete person
-        query = request.dbsession.query(Person)\
-            .filter(Person.id == self.person.id)\
-            .delete()
+        try:
 
-        # Delete the user
-        user = request.dbsession.query(User)\
-            .filter(User.email == self.person.email)\
-            .delete()
+            # Delete person
+            query = request.dbsession.query(Person)\
+                .filter(Person.id == self.person.id)\
+                .delete()
+
+            request.dbsession.flush()
+
+            # Delete the user
+            user = request.dbsession.query(User)\
+                .filter(User.email == self.person.email)\
+                .delete()
+            request.dbsession.flush()
+        except Exception as e:
+            print(str(e))
+            logger.error(str(e))
 
         request.session.flash('INFO: Deleted person')
         return HTTPFound(request.route_url('household.view', household_id=self.person.household_id))

@@ -135,8 +135,21 @@ class PageViews:
     def page_delete(self):
         request = self.request
 
-        request.dbsession.delete(self.page)
-        request.dbsession.flush()
+        try:
+            page_hits = request.dbsession.query(PageHit)\
+                .filter(PageHit.page_id == self.page.id)\
+                .all()
 
-        request.session.flash(f'INFO: Deleted page')
+            for page in page_hits:
+                request.dbsession.delete(page)
+
+            request.dbsession.flush()
+
+            request.dbsession.delete(self.page)
+            request.dbsession.flush()
+
+            request.session.flash(f'INFO: Deleted page')
+        except Exception as e:
+            logger.error(str(e))    
+
         return HTTPFound(request.route_url('page.index'))

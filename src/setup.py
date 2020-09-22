@@ -4,8 +4,6 @@ package_name = 'msumc'
 
 # List of dependencies installed via `pip install -e .`
 requires = [
-    'mysqlclient',
-    'Paste',
     'pyramid',
     'pyramid_jinja2',
     'pyramid_tm',
@@ -14,6 +12,8 @@ requires = [
     'sqlalchemy',
     'zope.sqlalchemy',
     'bcrypt',
+    'Paste',
+    'mysqlclient',
     'weasyprint',
 ]
 
