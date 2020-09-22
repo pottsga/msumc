@@ -78,8 +78,6 @@ class PersonViews:
             for household in self.households
         }
 
-        print(self.households_and_people)
-
         self.household = None
         if household_id:
             try:
@@ -214,7 +212,6 @@ class PersonViews:
                 .delete()
             request.dbsession.flush()
         except Exception as e:
-            print(str(e))
             logger.error(str(e))
 
         request.session.flash('INFO: Deleted person')
