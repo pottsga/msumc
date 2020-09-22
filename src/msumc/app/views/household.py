@@ -51,22 +51,27 @@ class HouseholdViews:
     def household_index(self):
         request = self.request
 
-        households = request.dbsession.query(Household)\
-            .order_by(Household.last_name)\
-            .all()
+        try:
+            households = request.dbsession.query(Household)\
+                .order_by(Household.last_name)\
+                .all()
 
-        household_count = request.dbsession.query(Household.id, func.count(Person.id))\
-            .select_from(Household)\
-            .join(Person, Household.id == Person.household_id)\
-            .group_by(Household.last_name)\
-            .all()
+            household_count = request.dbsession.query(Household.id, func.count(Person.id))\
+                .select_from(Household)\
+                .join(Person, Household.id == Person.household_id)\
+                .group_by(Household.last_name)\
+                .all()
 
-        household_count = { household_id: count for household_id, count in household_count }
+            household_count = { household_id: count for household_id, count in household_count }
 
-        return {
-            'households': households,
-            'household_count': household_count,
-        }
+            return {
+                'households': households,
+                'household_count': household_count,
+            }
+        except Exception as e:
+            request.session.flash(f"ERROR: {e}")
+
+            return { }
 
     @view_config(route_name='household.view', renderer='../templates/household/view.jinja2')
     def household_view(self):
@@ -83,8 +88,6 @@ class HouseholdViews:
                 .filter(Person.household_id == household_id)\
                 .order_by(Person.first_name)\
                 .all()
-
-            print(people)
 
             return {
                 'household': household,

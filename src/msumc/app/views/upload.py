@@ -26,6 +26,7 @@ class HouseholdViews:
 
         upload_id = request.matchdict.get('upload_id')
         self.upload = request.parameters.get('upload', None)
+        self.note = request.parameters.get('note', None)
 
         self.upload_fp = None
         if self.upload != b'':
@@ -65,6 +66,7 @@ class HouseholdViews:
 
         upload = Upload(
             fp=self.upload_fp,
+            note=self.note,
             created_on=datetime.datetime.now(),
             created_by=request.authenticated_userid,
         )

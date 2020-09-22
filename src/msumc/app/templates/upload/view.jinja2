@@ -46,11 +46,24 @@
     </div>
   </div>
 
+  <h2>Upload Details</h2>
+
   <div class="row">
     <div class="col-12">
-      <h2>Upload Details</h2>
+      <iframe src="{{request.static_url('msumc:app/static/uploads/' + upload.fp.split('/')[-1])}}" alt="Upload" style="width: 100%; height: 30vh;"></iframe>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
       <p>Link: <code>{{request.static_url('msumc:app/static/uploads/' + upload.fp.split('/')[-1])}}</code></p>
       <a target="_blank" href="{{request.static_url('msumc:app/static/uploads/' + upload.fp.split('/')[-1])}}">View Upload</a>
+    </div>
+    <div class="col-12">
+      <div class="form-group">
+        <label for="note">Note</label>
+        <textarea class="form-control" id="note" name="note" rows="6">{{upload.note}}</textarea>
+      </div>
     </div>
   </div>
 {% endblock content %}
