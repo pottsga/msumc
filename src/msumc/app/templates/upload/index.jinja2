@@ -18,6 +18,7 @@
         <th>Created On</th>
         <th>Created By</th>
         <th>Link</th>
+        <th>Note</th>
       </tr>   
     </thead>
     <tbody>
@@ -31,6 +32,7 @@
           <td>{{upload.created_on.strftime('%m/%d/%Y %I:%M %p')}}</td>
           <td>{{upload.created_by}}</td>
           <td>{{request.static_url('msumc:app/static/uploads/' + upload.fp.split('/')[-1])}}</td>
+          <td>{{upload.note}}</td>
         </tr>
       {% endfor %}
     </tbody>
