@@ -33,6 +33,10 @@ main {
   content: " *";
 }
 
+.photo {
+  max-width: 250px;
+  margin: 10px 0;
+}
 
 #username::after {
   content: " \01F464";
@@ -45,3 +49,4 @@ main {
     height: 100px;
   }
 } 
+

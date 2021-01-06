@@ -29,15 +29,20 @@
     </span>
   </h1>
 
-  <div class="row">
-    <div class="col-lg-4 col-sm-6 mx-auto">
-      {% if household.photo_fp %}
-        <img class="img img-fluid" src="{{request.static_url('msumc:app/static/img/household/' + household.photo_fp.split('/')[-1])}}" alt="Household Photo">
-      {% else %}
-        <img class="img img-fluid" src="{{request.static_url('msumc:app/static/img/no-image.png')}}" alt="No Image Found">
+  {% if household.photo_fp %}
+    <img class="img img-fluid photo" src="{{request.static_url('msumc:app/static/img/household/' + household.photo_fp.split('/')[-1])}}" alt="Household Photo">
+  {% else %}
+    <img class="img img-fluid photo" src="{{request.static_url('msumc:app/static/img/no-image.png')}}" alt="No Image Found">
+  {% endif %}
+
+  <h2>People</h2>
+  {% for person in people %}
+    <a href="{{request.route_url('person.view', person_id=person.id)}}">
+      {% if person.photo_fp %}
+        <img class="img img-fluid photo" src="{{request.static_url('msumc:app/static/img/person/' + person.photo_fp.split('/')[-1])}}" alt="Person Photo">
       {% endif %}
-    </div>
-  </div>
+    </a>
+  {% endfor %}
 
 
   <div class="collapse my-2" id="details">
@@ -61,7 +66,7 @@
 
   <div class="row">
     <div class="col-lg-9">
-      <h2>Household Details</h2>
+      <h2>Household Details</h2>None
       <fieldset {% if 'group:admins' not in request.effective_principals %}disabled{% endif %}>
         <form action="{{request.route_url('household.update', household_id=household.id)}}" enctype="multipart/form-data" method="POST">
           <div class="row">
@@ -117,7 +122,7 @@
                 {% else %}
                   <label for="photo">Add Photo</label>
                 {% endif %}
-                <input type="file" id="photo" name="photo" class="form-control">
+                <input type="file" id="photo" name="photo" class="form-control" accept="image/jpeg,image/png">
                 <small class="form-text text-muted">Only accepts <code>.jpg</code>, <code>.jpeg</code>, and <code>.png</code> files.</small>
               </div>
             </div>

@@ -35,3 +35,8 @@ class Person(Base):
     notes = Column(String(1000))
     created_on = Column(DateTime, nullable=False)
     created_by = Column(String(128), nullable=False)
+
+    photo_fp = Column(String(1000))
+
+    def photo_name(self):
+        return self.photo_fp.split('/')[-1]

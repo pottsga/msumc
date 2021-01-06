@@ -12,7 +12,7 @@
 {% block content %}
   <h1>Person - Add</h1>
 
-  <form action="{{request.route_url('person.add')}}" method="POST">
+  <form action="{{request.route_url('person.add')}}" enctype="multipart/form-data" method="POST">
     <div class="row">
       <div class="col-12">
         <div class="form-group">
@@ -105,6 +105,13 @@
         <div class="form-group">
           <label for="email">Email</label>
           <input type="email" id="email" name="email" class="form-control">
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label for="photo">Photo</label>
+          <input type="file" id="photo" name="photo" class="form-control" accept="image/jpeg,image/png">
+          <small class="form-text text-muted">Only accepts <code>.jpg</code>, <code>.jpeg</code>, and <code>.png</code> files.</small>
         </div>
       </div>
       <div class="col-12">

@@ -56,7 +56,17 @@
     </div>
   </div>
 
-  <form action="{{request.route_url('person.update', person_id=person.id)}}" method="POST">
+  <div class="row">
+    <div class="col-lg-4 col-sm-6 mx-auto">
+      {% if person.photo_fp %}
+        <img class="img img-fluid photo" src="{{request.static_url('msumc:app/static/img/person/' + person.photo_fp.split('/')[-1])}}" alt="Person Photo">
+      {% else %}
+        <img class="img img-fluid photo" src="{{request.static_url('msumc:app/static/img/no-image.png')}}" alt="No Image Found">
+      {% endif %}
+    </div>
+  </div>
+
+  <form action="{{request.route_url('person.update', person_id=person.id)}}" enctype="multipart/form-data" method="POST">
     <fieldset class="row" {% if 'group:admins' not in request.effective_principals %}disabled{% endif %}>
       {% if 'group:admins' in request.effective_principals %}
         <div class="col-lg-6">
@@ -157,6 +167,18 @@
           <input type="email" id="email" name="email" class="form-control" value="{{person.email or ''}}">
         </div>
       </div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          {% if household.photo_fp %}
+            <label for="photo">Update Photo</label>
+          {% else %}
+            <label for="photo">Add Photo</label>
+          {% endif %}
+          <input type="file" id="photo" name="photo" class="form-control" accept="image/jpeg,image/png">
+          <small class="form-text text-muted">Only accepts <code>.jpg</code>, <code>.jpeg</code>, and <code>.png</code> files.</small>
+        </div>
+      </div>
+
       <div class="col-12">
         <div class="form-group">
           <label for="notes">Notes</label>

@@ -1,6 +1,9 @@
+import os
 import datetime
 import logging
 logger = logging.getLogger(__name__)
+
+from msumc.app.functions import file
 
 from sqlalchemy.orm import exc
 
@@ -15,6 +18,8 @@ class PersonViews:
     def __init__(self, request):
         self.request = request
 
+        self.image_base_dir = f'{os.getcwd()}/msumc/app/static/img/person/'
+
         household_id = request.parameters.get('household_id', None)
         person_id = request.matchdict.get('person_id', None)
 
@@ -23,7 +28,7 @@ class PersonViews:
         is_deceased = request.parameters.get('is_deceased', None)
         birthday = request.parameters.get('birthday', None)
 
-
+        self.photo = request.parameters.get('photo', b'')
         self.is_active = True if is_active == 'on' else False
         self.is_admin = True if is_admin == 'on' else False
         self.is_deceased = True if is_deceased == 'on' else False
@@ -39,6 +44,12 @@ class PersonViews:
         self.notes = request.parameters.get('notes', None)
         self.people = request.dbsession.query(Person)\
             .all()
+
+        print(self.photo)
+            
+        self.photo_fp = None
+        if self.photo != b'':
+            self.photo_fp = file.write_file(self.image_base_dir, self.photo)
 
         # If the email is changed, the email is no longer verified
         #   and also delete the User record if it exists
@@ -152,6 +163,8 @@ class PersonViews:
             request.session.flash('ERROR: Email already is in use by another account, please use a unique email.')
             return HTTPFound(request.route_url('person.add'))
 
+        print(self.photo_fp)
+
         person = Person(
             is_active=self.is_active,
             is_deceased=self.is_deceased,
@@ -164,6 +177,7 @@ class PersonViews:
             phone_number=self.phone_number,
             email=self.email,
             notes=self.notes,
+            photo_fp=self.photo_fp,
             created_on=datetime.datetime.now(),
             created_by=request.authenticated_userid,
         )
@@ -189,6 +203,12 @@ class PersonViews:
         self.person.notes = self.notes
         self.person.birthday = self.birthday
         self.person.is_admin = self.is_admin
+
+        if self.photo != b'':
+            file.remove_file(self.person.photo_fp) # remove the old file from the system
+            photo_fp = file.write_file(self.image_base_dir, self.photo) # add the new file to the system
+
+            self.person.photo_fp = photo_fp
 
         request.session.flash('INFO: Updated person')
         return HTTPFound(request.route_url('person.view', person_id=self.person.id))

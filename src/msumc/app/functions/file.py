@@ -15,7 +15,13 @@ def write_file(base_dir, file):
 
     '''
     try:
-        filename, filetype = file.filename.split('.')
+        print('file', file)
+
+        filename = file.filename.split('.')
+        filename = ''.join(filename[:-1])
+        filetype = filename[-1:]
+
+        # filename, filetype = file.filename.replace(' ', '_').split('.')
         filename = f'{uuid.uuid4()}.{filetype}'
         fp = os.path.join(base_dir, filename)
         temp_fp = os.path.join(base_dir, f'~{filename}')
@@ -25,8 +31,14 @@ def write_file(base_dir, file):
             shutil.copyfileobj(file.file, output_file)
         os.rename(temp_fp, fp)
 
+        print('filename', filename)
+        print('filetype', filetype)
+
+        print('fp', fp)
+
         return fp
     except Exception as e:
+        raise e
         return False
 
 def remove_file(filepath):
