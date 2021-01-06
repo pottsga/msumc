@@ -146,7 +146,7 @@ class PersonViews:
         request = self.request
 
         # Check if email already in use by another account
-        email_exists = True if len(request.dbsession.query(Person).filter(Person.email == self.email).all()) > 0 else False
+        email_exists = True if len(request.dbsession.query(Person).filter(Person.email == self.email).all()) > 0 and self.email is not None else False
 
         if email_exists:
             request.session.flash('ERROR: Email already is in use by another account, please use a unique email.')
